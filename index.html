@@ -4,15 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Md Zeaul Hoque Zihad — Digital Product Freelancer</title>
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Premium web development services for businesses and startups. I build fast, modern websites and custom web applications that drive growth.">
-    
-    <!-- Google Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-    
-    <!-- Lucide Icons (via CDN for simplicity) -->
+    <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
@@ -28,722 +24,153 @@
             --font-display: 'Playfair Display', Georgia, serif;
             --font-mono: 'DM Mono', 'Courier New', monospace;
             --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --radius: 4px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            outline: none;
+        /* Essential Resets */
+        * { margin:0; padding:0; box-sizing:border-box; outline:none; }
+        html { scroll-behavior:smooth; }
+        body { 
+            background: var(--bg); color: var(--text); font-family: var(--font-mono); 
+            line-height: 1.6; font-size: 15px; -webkit-font-smoothing: antialiased;
         }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 80px); }
+        h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.1; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        /* Typography Utilities */
+        .text-gold { color: var(--accent); }
+        .text-serif { font-family: var(--font-display); }
+        .italic { font-style: italic; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: var(--font-mono);
-            font-size: 14px;
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Noise Overlay */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        /* Scroller */
-        ::-webkit-scrollbar { width: 3px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--accent); }
-
-        /* Typography & Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 40px;
-        }
-
-        h1, h2, h3, h4 {
-            font-family: var(--font-display);
-            font-weight: 700;
-            line-height: 1.1;
-        }
-
-        em {
-            font-style: italic;
-            font-family: var(--font-display);
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: var(--transition);
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px 32px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            tracking: 0.2em;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            font-family: var(--font-mono);
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: var(--bg);
-            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            background: var(--accent-muted);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--muted);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        /* Nav */
+        /* Navigation */
         nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 90px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 0 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            position: fixed; top: 0; left: 0; right: 0; height: 100px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(20px);
+            z-index: 1000; border-bottom: 1px solid var(--border); padding: 0 clamp(20px, 5vw, 80px);
         }
+        .logo { font-size: 28px; font-weight: 900; color: var(--accent); font-family: var(--font-display); }
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a { font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--muted); font-weight: 500; }
+        .nav-links a:hover { color: var(--text); }
 
-        .logo {
-            font-family: var(--font-display);
-            font-size: 20px;
-            font-weight: 900;
-            color: var(--accent);
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 16px 32px; font-size: 10px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.2em; cursor: pointer; transition: var(--transition); border-radius: var(--radius);
         }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-        }
-
-        .nav-links a {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--muted);
-            font-weight: 500;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-primary:hover { background: #dcb88a; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(200, 169, 110, 0.2); }
+        .btn-outline { border: 1px solid var(--border); color: var(--muted); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
         /* Hero */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding-top: 100px;
-            position: relative;
-            overflow: hidden;
-        }
+        #hero { min-height: 100vh; display: flex; align-items: center; padding-top: 100px; }
+        #hero h1 { font-size: clamp(48px, 9vw, 130px); margin-bottom: 30px; letter-spacing: -0.02em; }
+        #hero p { max-width: 600px; font-size: 20px; color: var(--muted); margin-bottom: 50px; }
 
-        .hero::after {
-            content: "ZIHAD";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: var(--font-display);
-            font-size: 25vw;
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.02);
-            pointer-events: none;
-            z-index: -1;
-        }
+        /* Stats */
+        .stats-bar { padding: 60px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: #080808; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; text-align: center; }
+        .stat-val { font-size: 44px; font-weight: 700; color: var(--accent); font-family: var(--font-display); margin-bottom: 8px; }
+        .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--muted); }
 
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--accent);
-            margin-bottom: 30px;
-            background: rgba(200, 169, 110, 0.05);
-            padding: 8px 16px;
-            border-radius: 2px;
-        }
+        /* Services */
+        section { padding: clamp(100px, 15vw, 200px) 0; }
+        .section-header { margin-bottom: 100px; max-width: 800px; }
+        .section-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.4em; color: var(--accent); margin-bottom: 24px; display: block; font-weight: 700; }
+        .section-header h2 { font-size: clamp(36px, 6vw, 84px); }
 
-        .hero h1 {
-            font-size: clamp(48px, 8vw, 110px);
-            margin-bottom: 24px;
-            max-width: 900px;
-        }
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+        .service-card { background: var(--surface); border: 1px solid var(--border); padding: 50px; border-radius: 8px; transition: var(--transition); }
+        .service-card:hover { transform: translateY(-10px); border-color: var(--accent); background: var(--surface-hover); }
+        .service-card h3 { font-size: 28px; margin-bottom: 20px; }
+        .service-card p { color: var(--muted); margin-bottom: 30px; }
+        .service-card ul { list-style: none; font-size: 13px; color: var(--muted); display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .service-card ul li { display: flex; align-items: center; gap: 10px; }
+        .service-card ul li i { color: var(--accent); width: 14px; }
 
-        .hero h1 em {
-            color: var(--accent);
-        }
-
-        .hero-sub {
-            font-size: clamp(16px, 2vw, 20px);
-            color: var(--muted);
-            margin-bottom: 48px;
-            max-width: 600px;
-        }
-
-        .hero-ctas {
-            display: flex;
-            gap: 20px;
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            padding: 40px 0;
-            background: #0d0d0d;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-cols: repeat(4, 1fr);
-            text-align: center;
-        }
-
-        .stat-item h4 {
-            font-size: 32px;
-            color: var(--accent);
-            margin-bottom: 4px;
-        }
-
-        .stat-item p {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--muted);
-        }
-
-        /* Sections General */
-        section {
-            padding: 140px 0;
-        }
-
-        .section-header {
-            margin-bottom: 80px;
-        }
-
-        .section-header p {
-            color: var(--accent);
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .section-header h2 {
-            font-size: clamp(36px, 5vw, 64px);
-        }
-
-        /* Services Grid */
-        .services-grid {
-            display: grid;
-            grid-template-cols: repeat(2, 1fr);
-            gap: 40px;
-        }
-
-        .service-card {
-            background: var(--surface);
-            padding: 50px;
-            border: 1px solid var(--border);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .service-card:hover {
-            border-color: var(--accent-muted);
-            transform: translateY(-5px);
-        }
-
-        .service-problem {
-            font-size: 12px;
-            color: var(--muted);
-            margin-bottom: 12px;
-            font-style: italic;
-        }
-
-        .service-card h3 {
-            font-size: 28px;
-            margin-bottom: 24px;
-            color: var(--accent);
-        }
-
-        .service-solution {
-            font-size: 14px;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            color: var(--text);
-        }
-
-        .deliverables {
-            border-top: 1px solid var(--border);
-            padding-top: 24px;
-            margin-bottom: 30px;
-        }
-
-        .deliverables p {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--muted);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .deliverables span {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text);
-            padding: 4px 10px;
-            margin: 0 4px 4px 0;
-            font-size: 10px;
-        }
-
-        .service-price {
-            margin-top: auto;
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text);
-            font-family: var(--font-mono);
-        }
-
-        /* Project Cards */
-        .projects-grid {
-            display: grid;
-            grid-template-cols: 1fr;
-            gap: 80px;
-        }
-
-        .project-card {
-            display: grid;
-            grid-template-cols: 1.2fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .project-image {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: var(--surface);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .project-image img {
-            width: 100%;
-            height: 100%;
-            object-cover: cover;
-            opacity: 0.7;
-            transition: 1s var(--transition);
-        }
-
-        .project-card:hover .project-image img {
-            opacity: 1;
-            transform: scale(1.05);
-        }
-
-        .project-info h3 {
-            font-size: 42px;
-            margin-bottom: 12px;
-        }
-
-        .project-client {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--accent);
-            margin-bottom: 30px;
-        }
-
-        .case-study {
-            margin-bottom: 32px;
-        }
-
-        .case-block {
-            margin-bottom: 20px;
-        }
-
-        .case-block h5 {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 4px;
-        }
-
-        .project-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            background: rgba(74, 222, 128, 0.1);
-            color: #4ade80;
-            font-size: 9px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 10px;
-        }
+        /* Case Studies (The "Full Version" Work Section) */
+        .case-study { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-bottom: 150px; }
+        .case-study:nth-child(even) { direction: rtl; }
+        .case-study:nth-child(even) > * { direction: ltr; }
+        .cs-image { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+        .cs-image img { width: 100%; height: auto; transition: 0.6s; }
+        .cs-image:hover img { transform: scale(1.03); }
+        .cs-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 16px; display: block; }
+        .cs-title { font-size: 44px; margin-bottom: 30px; }
+        .cs-box { background: var(--surface); border: 1px solid var(--border); padding: 30px; border-radius: 8px; margin-bottom: 24px; }
+        .cs-box h5 { font-size: 10px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; letter-spacing: 0.1em; }
+        .cs-box p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+        
+        /* Elite Iframe Cards (Add back optionally if needed, but going "Fullfully" favors Case Studies) */
 
         /* Pricing */
-        .pricing-grid {
-            display: grid;
-            grid-template-cols: repeat(3, 1fr);
-            gap: 30px;
-        }
-
-        .pricing-card {
-            background: var(--surface);
-            padding: 60px 40px;
-            border: 1px solid var(--border);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .pricing-card.featured {
-            border-color: var(--accent);
-            transform: scale(1.05);
-            z-index: 2;
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--accent);
-            color: var(--bg);
-            font-size: 9px;
-            font-weight: 900;
-            padding: 4px 12px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .pricing-card h3 {
-            font-size: 22px;
-            margin-bottom: 8px;
-        }
-
-        .pricing-for {
-            font-size: 10px;
-            color: var(--muted);
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .price {
-            font-size: 42px;
-            font-family: var(--font-display);
-            font-weight: 900;
-            margin-bottom: 40px;
-            color: var(--accent);
-        }
-
-        .price span {
-            font-size: 16px;
-            color: var(--muted);
-            font-weight: 400;
-        }
-
-        .pricing-features {
-            text-align: left;
-            margin-bottom: 40px;
-            list-style: none;
-        }
-
-        .pricing-features li {
-            font-size: 12px;
-            margin-bottom: 16px;
-            color: var(--muted);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .pricing-features li i {
-            color: var(--accent);
-            width: 14px;
-        }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .price-card { background: var(--surface); border: 1px solid var(--border); padding: 60px 40px; border-radius: 8px; transition: var(--transition); position: relative; }
+        .price-card:hover { border-color: var(--accent); transform: translateY(-10px); }
+        .price-card.featured { border-color: var(--accent); background: #141414; }
+        .price-card.featured::after { content: "RECOMMENDED"; position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 4px 12px; font-size: 9px; font-weight: 900; letter-spacing: 0.1em; border-radius: 0 0 4px 4px; }
+        .price-title { font-size: 24px; margin-bottom: 10px; }
+        .price-subtitle { font-size: 13px; color: var(--muted); margin-bottom: 30px; }
+        .price-val { font-size: 54px; font-family: var(--font-display); margin-bottom: 40px; }
+        .price-val span { font-size: 16px; color: var(--muted); font-family: var(--font-mono); font-weight: 300; }
+        .price-list { list-style: none; margin-bottom: 50px; border-top: 1px solid var(--border); padding-top: 30px; }
+        .price-list li { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+        .price-list li i { color: var(--accent); width: 14px; }
 
         /* FAQ */
-        .faq-list {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .faq-item {
-            border-bottom: 1px solid var(--border);
-            padding: 30px 0;
-        }
-
-        .faq-question {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            width: 100%;
-            background: none;
-            border: none;
-            color: var(--text);
-            text-align: left;
-            font-family: var(--font-mono);
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: 0.5s var(--transition);
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.8;
-            padding-top: 0;
-        }
-
-        .faq-item.active .faq-answer {
-            max-height: 200px;
-            padding-top: 20px;
-        }
-
-        .faq-item.active i {
-            transform: rotate(45deg);
-        }
+        .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+        .faq-item h4 { font-size: 20px; margin-bottom: 16px; color: var(--text); }
+        .faq-item p { font-size: 15px; color: var(--muted); line-height: 1.7; }
 
         /* Contact */
-        .contact-section {
-            display: grid;
-            grid-template-cols: 1fr 1fr;
-            gap: 100px;
-        }
+        .contact-wrap { display: grid; grid-template-columns: 1.5fr 1fr; gap: 100px; align-items: start; }
+        .contact-form { display: grid; gap: 24px; }
+        .form-group { display: grid; gap: 12px; }
+        .form-group label { font-size: 10px; text-transform: uppercase; color: var(--accent); letter-spacing: 0.1em; }
+        .form-control { background: var(--surface); border: 1px solid var(--border); padding: 18px; color: var(--text); font-family: var(--font-mono); border-radius: 4px; border-bottom: 2px solid transparent; transition: 0.3s; }
+        .form-control:focus { border-bottom-color: var(--accent); background: var(--surface-hover); }
 
-        .contact-info h2 {
-            margin-bottom: 24px;
+        /* Skills / Arsenal */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        .skill-card { 
+            background: var(--surface); border: 1px solid var(--border); padding: 40px; 
+            border-radius: 8px; position: relative; overflow: hidden; transition: var(--transition);
         }
-
-        .contact-info-sub {
-            color: var(--muted);
-            margin-bottom: 48px;
+        .skill-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .skill-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            transform: translateX(-100%); transition: 0.6s;
         }
+        .skill-card:hover::before { transform: translateX(100%); }
+        .skill-icon { font-size: 24px; color: var(--accent); margin-bottom: 24px; opacity: 0.8; }
+        .skill-name { font-size: 20px; font-family: var(--font-display); margin-bottom: 12px; }
+        .skill-bar-wrap { height: 2px; background: var(--border); margin: 20px 0; position: relative; }
+        .skill-bar-fill { height: 100%; background: var(--accent); width: 0; transition: 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .skill-tag { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); border: 1px solid var(--border); padding: 4px 10px; border-radius: 2px; }
 
-        .contact-method {
-            margin-bottom: 32px;
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
+        footer { padding: 100px 0 60px; border-top: 1px solid var(--border); background: #080808; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 80px; }
+        .footer-bottom { border-top: 1px solid var(--border); padding-top: 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px; }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .case-study { grid-template-columns: 1fr; gap: 50px; text-align: center; }
+            .case-study:nth-child(even) { direction: ltr; }
+            .cs-box { text-align: left; }
+            .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-wrap { grid-template-columns: 1fr; gap: 60px; }
         }
-
-        .contact-method-icon {
-            color: var(--accent);
-            padding-top: 4px;
-        }
-
-        .contact-method-text h5 {
-            font-size: 10px;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 4px;
-        }
-
-        .contact-method-text p {
-            font-size: 18px;
-            font-family: var(--font-display);
-            font-weight: 700;
-        }
-
-        .contact-form {
-            background: var(--surface);
-            padding: 50px;
-            border: 1px solid var(--border);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-cols: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--muted);
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .form-group input, 
-        .form-group select, 
-        .form-group textarea {
-            width: 100%;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            padding: 14px;
-            color: var(--text);
-            font-family: var(--font-mono);
-            font-size: 12px;
-        }
-
-        .form-group textarea {
-            height: 120px;
-            resize: none;
-        }
-
-        .form-group input:focus, 
-        .form-group select:focus, 
-        .form-group textarea:focus {
-            border-color: var(--accent);
-        }
-
-        /* Toast */
-        #toast {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            background: var(--accent);
-            color: var(--bg);
-            padding: 16px 32px;
-            font-size: 11px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            z-index: 2000;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: var(--transition);
-            pointer-events: none;
-        }
-
-        #toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Footer */
-        footer {
-            padding: 60px 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-        }
-
-        .footer-socials {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .footer-socials a {
-            color: var(--muted);
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-        }
-
-        .footer-socials a:hover {
-            color: var(--accent);
-        }
-
-        .copyright {
-            font-size: 9px;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* Animations on Scroll */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: 1s var(--transition);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 1024px) {
-            .services-grid, .pricing-grid, .contact-section {
-                grid-template-cols: 1fr;
-            }
-            .project-card {
-                grid-template-cols: 1fr;
-                gap: 30px;
-            }
-            .pricing-card.featured {
-                transform: none;
-            }
-            .stats-grid {
-                grid-template-cols: repeat(2, 1fr);
-                gap: 40px;
-            }
-        }
-
         @media (max-width: 768px) {
-            nav { padding: 0 20px; }
             .nav-links { display: none; }
-            .container { padding: 0 24px; }
-            .hero h1 { font-size: 48px; }
-            .form-grid { grid-template-cols: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+            .services-grid, .pricing-grid, .faq-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -754,439 +181,326 @@
         <div class="nav-links">
             <a href="#hero">Home</a>
             <a href="#services">Services</a>
+            <a href="#arsenal">Arsenal</a>
             <a href="#projects">Work</a>
             <a href="#pricing">Pricing</a>
             <a href="#contact">Contact</a>
+            <a href="#contact" class="btn btn-primary" style="padding:10px 24px;">Hire Me</a>
         </div>
-        <a href="#contact" class="btn btn-primary" style="padding: 12px 24px;">Hire Me</a>
     </nav>
 
-    <div id="hero" class="hero">
-        <div class="container reveal active">
-            <div class="hero-badge">
-                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse" style="width:7px; height:7px; background:#4ade80; border-radius:50%;"></div>
-                Available for new projects
-            </div>
-            <h1>I Build Web Products<br>That <em>Grow Businesses</em>.</h1>
-            <p class="hero-sub">From landing pages to full web apps — fast delivery, real results. I help startups and business owners digitize their vision.</p>
-            <div class="hero-ctas">
+    <!-- HERO -->
+    <section id="hero">
+        <div class="container">
+            <span class="section-tag" style="margin-bottom:30px;">Available for Freelance</span>
+            <h1>I Build Web Products <br>That <em class="text-gold italic">Grow</em> Businesses.</h1>
+            <p>From landing pages to full web apps — fast delivery, real results. I help startups and business owners digitize their vision with high-performance code.</p>
+            <div style="display:flex; gap:20px; flex-wrap:wrap;">
                 <a href="#projects" class="btn btn-primary">View My Work</a>
                 <a href="#contact" class="btn btn-outline">Book a Free Call</a>
             </div>
         </div>
-    </div>
+    </section>
 
+    <!-- STATS -->
     <div class="stats-bar">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-item">
-                    <h4 class="counter" data-target="10">0</h4>
-                    <p>Projects Delivered</p>
-                </div>
-                <div class="stat-item">
-                    <h4 class="counter" data-target="5">0</h4>
-                    <p>Happy Clients</p>
-                </div>
-                <div class="stat-item">
-                    <h4 class="counter" data-target="3">0</h4>
-                    <p>Years Learning</p>
-                </div>
-                <div class="stat-item">
-                    <h4 style="font-size:32px; color:var(--accent); margin-bottom:4px;">24hr</h4>
-                    <p>Response Time</p>
-                </div>
+                <div><div class="stat-val">12+</div><div class="stat-label">Projects Delivered</div></div>
+                <div><div class="stat-val">10+</div><div class="stat-label">Happy Clients</div></div>
+                <div><div class="stat-val">03+</div><div class="stat-label">Years Learning</div></div>
+                <div><div class="stat-val">24hr</div><div class="stat-label">Response Time</div></div>
             </div>
         </div>
     </div>
 
+    <!-- SERVICES -->
     <section id="services">
         <div class="container">
-            <div class="section-header reveal">
-                <p>What I Offer</p>
-                <h2>Premium Solutions for<br>Modern Businesses</h2>
+            <div class="section-header">
+                <span class="section-tag">What I Offer</span>
+                <h2>Premium Solutions for <br>Modern Businesses</h2>
             </div>
             <div class="services-grid">
-                <!-- Service 1 -->
-                <div class="service-card reveal">
-                    <p class="service-problem">"You have a business but no website, so clients don't trust you"</p>
-                    <h3>Business Website / <br>Landing Page</h3>
-                    <p class="service-solution">I build fast, modern websites that make your business look professional and convert visitors into customers.</p>
-                    <div class="deliverables">
-                        <p><i data-lucide="check-circle"></i> WHAT'S INCLUDED:</p>
-                        <span>SEO Setup</span><span>WhatsApp Button</span><span>Google Maps</span><span>Responsive Design</span><span>7-Day Delivery</span>
-                    </div>
-                    <p class="service-price">Starting at $80</p>
+                <div class="service-card">
+                    <span style="color:var(--accent); font-size:10px; letter-spacing:0.1em; display:block; margin-bottom:12px;">For Launching</span>
+                    <h3>Landing Pages</h3>
+                    <p>High-conversion pages built to turn visitors into leads. Perfect for ads and new product launches.</p>
+                    <ul>
+                        <li><i data-lucide="check"></i> Responsive Design</li>
+                        <li><i data-lucide="check"></i> SEO Optimized</li>
+                        <li><i data-lucide="check"></i> Lightning Fast</li>
+                        <li><i data-lucide="check"></i> Analytics Ready</li>
+                    </ul>
                 </div>
-
-                <!-- Service 2 -->
-                <div class="service-card reveal">
-                    <p class="service-problem">"You have a manual process or idea that needs to be digitized"</p>
-                    <h3>Web App / <br>Custom Software</h3>
-                    <p class="service-solution">Custom dashboards, booking systems, or inventory tools built to automate your business operations.</p>
-                    <div class="deliverables">
-                        <p><i data-lucide="check-circle"></i> WHAT'S INCLUDED:</p>
-                        <span>React + DB</span><span>Admin Panel</span><span>User Auth</span><span>Mobile App Feel</span><span>Full Deployment</span>
-                    </div>
-                    <p class="service-price">Starting at $200</p>
-                </div>
-
-                <!-- Service 3 -->
-                <div class="service-card reveal">
-                    <p class="service-problem">"You want to sell products online but don't know where to start"</p>
-                    <h3>Complete <br>E-Commerce Store</h3>
-                    <p class="service-solution">A full online shop where you can manage products, track orders, and talk to customers directly.</p>
-                    <div class="deliverables">
-                        <p><i data-lucide="check-circle"></i> WHAT'S INCLUDED:</p>
-                        <span>Product Catalog</span><span>WhatsApp Orders</span><span>Admin Dashboard</span><span>Category Filters</span>
-                    </div>
-                    <p class="service-price">Starting at $150</p>
-                </div>
-
-                <!-- Service 4 -->
-                <div class="service-card reveal">
-                    <p class="service-problem">"You want smart features in your app — chatbots or auto-content"</p>
-                    <h3>AI-Powered <br>Integration</h3>
-                    <p class="service-solution">I integrate smart AI tools and LLM APIs into your existing or new products to automate workflows.</p>
-                    <div class="deliverables">
-                        <p><i data-lucide="check-circle"></i> WHAT'S INCLUDED:</p>
-                        <span>AI Chatbots</span><span>Smart Recommendations</span><span>Auto Workflows</span><span>API Integration</span>
-                    </div>
-                    <p class="service-price">Starting at $150</p>
+                <div class="service-card">
+                    <span style="color:var(--accent); font-size:10px; letter-spacing:0.1em; display:block; margin-bottom:12px;">For Operations</span>
+                    <h3>Custom Web Apps</h3>
+                    <p>Automate your business logic with custom dashboards, booking systems, and internal tools.</p>
+                    <ul>
+                        <li><i data-lucide="check"></i> User Auth</li>
+                        <li><i data-lucide="check"></i> Database Logic</li>
+                        <li><i data-lucide="check"></i> API Integration</li>
+                        <li><i data-lucide="check"></i> Admin Panel</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
+    
+    <!-- ARSENAL (Coding Skills) -->
+    <section id="arsenal" style="background:#0a0a0a; border-top: 1px solid var(--border);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">The Tech Stack</span>
+                <h2>Elite Arsenal for <br>Modern Performance</h2>
+            </div>
+            
+            <div id="skills-container" class="skills-grid">
+                <!-- Skills will be automatically injected here -->
+            </div>
+        </div>
+    </section>
 
+    <!-- CASE STUDIES -->
     <section id="projects" style="background:#080808;">
         <div class="container">
-            <div class="section-header reveal">
-                <p>Case Studies</p>
-                <h2>Proven Results for<br>Real Clients</h2>
+            <div class="section-header">
+                <span class="section-tag">Case Studies</span>
+                <h2>Proven Results for <br>Real Clients</h2>
             </div>
-            <div class="projects-grid">
-                <!-- Project 1 -->
-                <div class="project-card reveal">
-                    <div class="project-image">
-                        <img src="https://images.unsplash.com/photo-1556742049-13e73ec38a5a?auto=format&fit=crop&q=80" alt="BigBazar">
-                    </div>
-                    <div class="project-info">
-                        <p class="project-client">Product Management · Retail</p>
-                        <h3>BigBazar Catalog</h3>
-                        <div class="case-study">
-                            <div class="case-block">
-                                <h5>The Problem</h5>
-                                <p>Retailer had 100s of products but no digital catalog. Customers had to call for every price inquiry.</p>
-                            </div>
-                            <div class="case-block">
-                                <h5>The Solution</h5>
-                                <p>Built a filterable catalog with an admin panel and one-click WhatsApp ordering system.</p>
-                            </div>
-                        </div>
-                        <div class="project-badge">Production Ready</div>
-                    </div>
-                </div>
 
-                <!-- Project 2 -->
-                <div class="project-card reveal">
-                    <div class="project-info" style="order: 2;">
-                        <p class="project-client">AI · Health Tech</p>
-                        <h3>FitDay.ai</h3>
-                        <div class="case-study">
-                            <div class="case-block">
-                                <h5>The Problem</h5>
-                                <p>Generic fitness apps lacked personalization. Users needed smarter, AI-driven meal and workout plans.</p>
-                            </div>
-                            <div class="case-block">
-                                <h5>The Solution</h5>
-                                <p>Full Next.js app integrated with AI APIs for personalized fitness recommendations.</p>
-                            </div>
-                        </div>
-                        <div class="project-badge">AI Integrated</div>
-                    </div>
-                    <div class="project-image" style="order: 1;">
-                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80" alt="FitDay">
-                    </div>
+            <!-- Case Study 1 -->
+            <div class="case-study">
+                <div class="cs-image">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="BigBazar">
                 </div>
+                <div class="cs-content">
+                    <span class="cs-tag">Retail · Catalog</span>
+                    <h3 class="cs-title">BigBazar Catalog</h3>
+                    <div class="cs-box">
+                        <h5>The Problem</h5>
+                        <p>Merchant had 1000s of products but no digital presence. Stock inquiries were handled manually via phone call.</p>
+                    </div>
+                    <div class="cs-box">
+                        <h5>The Solution</h5>
+                        <p>Built a filterable catalog with one-click WhatsApp ordering and a custom inventory dashboard.</p>
+                    </div>
+                    <a href="https://bigbazarbariarhatbigbazarbariarhat.pages.dev" target="_blank" class="btn btn-outline">View Live Site ↗</a>
+                </div>
+            </div>
 
-                <!-- Project 3 -->
-                <div class="project-card reveal">
-                    <div class="project-image">
-                        <img src="https://images.unsplash.com/photo-1544391682-c7ef561397ad?auto=format&fit=crop&q=80" alt="Kiddoz">
+            <!-- Case Study 2 -->
+            <div class="case-study">
+                <div class="cs-image">
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80" alt="FitDay">
+                </div>
+                <div class="cs-content">
+                    <span class="cs-tag">AI · Health</span>
+                    <h3 class="cs-title">FitDay.ai</h3>
+                    <div class="cs-box">
+                        <h5>The Problem</h5>
+                        <p>Generic fitness apps provided zero personalization for meal planning and workout routines.</p>
                     </div>
-                    <div class="project-info">
-                        <p class="project-client">DBMS · Education</p>
-                        <h3>Kiddoz Support</h3>
-                        <div class="case-study">
-                            <div class="case-block">
-                                <h5>The Problem</h5>
-                                <p>Childcare center was drowning in manual paperwork for attendance, staff, and messaging.</p>
-                            </div>
-                            <div class="case-block">
-                                <h5>The Solution</h5>
-                                <p>Engineered a robust DBMS with MySQL to automate records, attendance, and communication.</p>
-                            </div>
-                        </div>
-                        <div class="project-badge">Database Engineered</div>
+                    <div class="cs-box">
+                        <h5>The Solution</h5>
+                        <p>Integrated OpenAI GPT-4 with a Next.js frontend to generate real-time, dynamic fitness plans.</p>
                     </div>
+                    <a href="https://fitday-aifitday-ai.pages.dev" target="_blank" class="btn btn-outline">View Case Study ↗</a>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- PRICING -->
     <section id="pricing">
         <div class="container">
-            <div class="section-header reveal" style="text-align:center;">
-                <p>Transparent Pricing</p>
-                <h2>No Hidden Fees.<br>Choose Your Package.</h2>
+            <div class="section-header" style="text-align:center; margin: 0 auto 100px;">
+                <span class="section-tag">Transparent Pricing</span>
+                <h2>Choose Your Package</h2>
             </div>
             <div class="pricing-grid">
-                <!-- Tier 1 -->
-                <div class="pricing-card reveal">
-                    <h3>Starter</h3>
-                    <p class="pricing-for">For small brands & shops</p>
-                    <div class="price">$80<span>–150</span></div>
-                    <ul class="pricing-features">
-                        <li><i data-lucide="check"></i> Up to 5 pages</li>
-                        <li><i data-lucide="check"></i> Mobile responsive</li>
-                        <li><i data-lucide="check"></i> WhatsApp Button</li>
+                <div class="price-card">
+                    <h3 class="price-title">Starter</h3>
+                    <p class="price-subtitle">For businesses launching now</p>
+                    <div class="price-val">$80<span> /page</span></div>
+                    <ul class="price-list">
+                        <li><i data-lucide="check"></i> 5 Pages / One-Pager</li>
+                        <li><i data-lucide="check"></i> Mobile Responsive</li>
+                        <li><i data-lucide="check"></i> WhatsApp Integration</li>
                         <li><i data-lucide="check"></i> 7-Day Delivery</li>
-                        <li><i data-lucide="check"></i> 2 weeks support</li>
                     </ul>
-                    <a href="#contact" class="btn btn-outline">Get Started →</a>
+                    <a href="#contact" class="btn btn-outline" style="width:100%;">Get Started Now</a>
                 </div>
-
-                <!-- Tier 2 -->
-                <div class="pricing-card featured reveal">
-                    <div class="popular-badge">Most Popular</div>
-                    <h3>Business</h3>
-                    <p class="pricing-for">For startups & stores</p>
-                    <div class="price">$200<span>–400</span></div>
-                    <ul class="pricing-features">
-                        <li><i data-lucide="check"></i> Full Web App / E-Com</li>
-                        <li><i data-lucide="check"></i> Admin Dashboard</li>
-                        <li><i data-lucide="check"></i> User Auth / Login</li>
-                        <li><i data-lucide="check"></i> Database Logic</li>
-                        <li><i data-lucide="check"></i> 1 Month Support</li>
-                        <li><i data-lucide="check"></i> High Performance</li>
+                <div class="price-card featured">
+                    <h3 class="price-title">Business</h3>
+                    <p class="price-subtitle">For scale and automation</p>
+                    <div class="price-val">$200+</div>
+                    <ul class="price-list">
+                        <li><i data-lucide="check"></i> Full Web Application</li>
+                        <li><i data-lucide="check"></i> Managed Admin Dashboard</li>
+                        <li><i data-lucide="check"></i> Database Integration</li>
+                        <li><i data-lucide="check"></i> User Authentication</li>
                     </ul>
-                    <a href="#contact" class="btn btn-primary">Let's Build →</a>
+                    <a href="#contact" class="btn btn-primary" style="width:100%;">Let's Build It</a>
                 </div>
-
-                <!-- Tier 3 -->
-                <div class="pricing-card reveal">
-                    <h3>Enterprise</h3>
-                    <p class="pricing-for">For complex ideas</p>
-                    <div class="price">Custom</div>
-                    <ul class="pricing-features">
-                        <li><i data-lucide="check"></i> Full Custom Logic</li>
-                        <li><i data-lucide="check"></i> AI Integration</li>
-                        <li><i data-lucide="check"></i> Complex DB Design</li>
-                        <li><i data-lucide="check"></i> Scalable Architecture</li>
-                        <li><i data-lucide="check"></i> Priority Support</li>
+                <div class="price-card">
+                    <h3 class="price-title">Enterprise</h3>
+                    <p class="price-subtitle">For custom, complex logic</p>
+                    <div class="price-val">Custom</div>
+                    <ul class="price-list">
+                        <li><i data-lucide="check"></i> AI Model Integration</li>
+                        <li><i data-lucide="check"></i> Complex API Systems</li>
+                        <li><i data-lucide="check"></i> Priority Architecture</li>
+                        <li><i data-lucide="check"></i> 24/7 Managed Support</li>
                     </ul>
-                    <a href="#contact" class="btn btn-outline">Book a Call →</a>
+                    <a href="#contact" class="btn btn-outline" style="width:100%;">Book a Call</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="faq" style="background:#0d0d0d;">
+    <!-- FAQ -->
+    <section id="faq" style="background:#080808;">
         <div class="container">
-            <div class="section-header reveal">
-                <p>Common Questions</p>
-                <h2>Clearing Your Doubts</h2>
+            <div class="section-header">
+                <span class="section-tag">Clearing Your Doubts</span>
+                <h2>Frequently Asked</h2>
             </div>
-            <div class="faq-list">
-                <div class="faq-item reveal">
-                    <button class="faq-question">How long does a project take? <i data-lucide="plus"></i></button>
-                    <div class="faq-answer">
-                        Simple websites usually take 5–7 days. Full web apps or stores take between 14–21 days. Complex products with AI or heavy backend requirements depend on the specific scope we discuss.
-                    </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>How long does a project take?</h4>
+                    <p>Landing pages launch in 5-7 days. Complex web apps typically take 2-4 weeks depending on the logic and integrations required.</p>
                 </div>
-                <div class="faq-item reveal">
-                    <button class="faq-question">How do I pay? <i data-lucide="plus"></i></button>
-                    <div class="faq-answer">
-                        I work with a 50% upfront deposit to secure the timeline and start the discovery phase. The remaining 50% is due once the project is finished and tested. Payments are accepted via bKash, PayPal, or Direct Bank Transfer.
-                    </div>
-                </div>
-                <div class="faq-item reveal">
-                    <button class="faq-question">Will I be able to update content myself? <i data-lucide="plus"></i></button>
-                    <div class="faq-answer">
-                        Absolutely. I build custom admin panels or integrate simple content management tools so you can add products, change text, or update images without touching any code.
-                    </div>
-                </div>
-                <div class="faq-item reveal">
-                    <button class="faq-question">What if I'm not happy with the result? <i data-lucide="plus"></i></button>
-                    <div class="faq-answer">
-                        Every package includes multiple rounds of revisions. We maintain a constant feedback loop throughout development so the final product aligns perfectly with your expectations.
-                    </div>
+                <div class="faq-item">
+                    <h4>Do you offer maintenance?</h4>
+                    <p>Yes. All business packages include 1 month of free support. I also offer long-term maintenance retainers for growing apps.</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- CONTACT -->
     <section id="contact">
         <div class="container">
-            <div class="contact-section">
-                <div class="contact-info reveal">
-                    <p style="color:var(--accent); text-transform:uppercase; tracking:0.3em; font-size:10px; margin-bottom:16px; font-weight:700;">Get In Touch</p>
-                    <h2>Ready to build<br>something special?</h2>
-                    <p class="contact-info-sub">Tell me about your business goal, and I'll help you find the best solution to get there. Usually respond within 24 hours.</p>
-
-                    <div class="contact-method" onclick="copyEmail()" style="cursor:pointer;">
-                        <div class="contact-method-icon"><i data-lucide="mail"></i></div>
-                        <div class="contact-method-text">
-                            <h5>Email Address</h5>
-                            <p>zhzihad2000@gmail.com</p>
-                            <small style="color:var(--muted); font-size:9px; font-style:italic;">Click to copy</small>
+            <div class="contact-wrap">
+                <div>
+                    <span class="section-tag">Get In Touch</span>
+                    <h2>Ready to Build <br>Something Special?</h2>
+                    <p style="color:var(--muted); margin: 30px 0 60px; max-width:450px;">Tell me about your business goal, and I'll help you find the best solution. Response time is usually within 24 hours.</p>
+                    
+                    <div style="display:grid; gap:40px;">
+                        <div onclick="copyEmail()" style="cursor:pointer;">
+                            <h5 style="font-size:10px; text-transform:uppercase; color:var(--accent); margin-bottom:10px; letter-spacing:0.1em;">Email Address</h5>
+                            <p style="font-size:24px; font-family:var(--font-display);">zhzihad2000@gmail.com</p>
                         </div>
-                    </div>
-
-                    <div class="contact-method">
-                        <div class="contact-method-icon"><i data-lucide="map-pin"></i></div>
-                        <div class="contact-method-text">
-                            <h5>Location</h5>
-                            <p>Bangladesh 🇧🇩</p>
+                        <div>
+                            <h5 style="font-size:10px; text-transform:uppercase; color:var(--accent); margin-bottom:10px; letter-spacing:0.1em;">Location</h5>
+                            <p style="font-size:24px; font-family:var(--font-display);">Chittagong, Bangladesh 🇧🇩</p>
                         </div>
                     </div>
                 </div>
-
-                <div class="contact-form reveal">
-                    <form id="portfolio-form">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Your Name</label>
-                                <input type="text" placeholder="John Doe" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Email / WhatsApp</label>
-                                <input type="text" placeholder="your@email.com" required>
-                            </div>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Project Type</label>
-                                <select>
-                                    <option>Business Website</option>
-                                    <option>Web Application</option>
-                                    <option>E-Commerce Store</option>
-                                    <option>AI Feature</option>
-                                    <option>Other</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Budget Range</label>
-                                <select>
-                                    <option>Under $100</option>
-                                    <option>$100 – $300</option>
-                                    <option>$300 – $500</option>
-                                    <option>$500+</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Tell me about your project</label>
-                            <textarea placeholder="Describe your business problem or idea..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width:100%;">Send Message →</button>
-                    </form>
-                </div>
+                
+                <form class="contact-form" onsubmit="event.preventDefault(); alert('Message Received. I will contact you shortly.');">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" class="form-control" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Business Email</label>
+                        <input type="email" class="form-control" placeholder="john@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>The Goal</label>
+                        <textarea class="form-control" rows="5" placeholder="I need a system to..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top:20px;">Send Discovery Message</button>
+                </form>
             </div>
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer>
-        <div class="container text-center">
-            <div class="footer-socials">
-                <a href="https://github.com/zihad2003" target="_blank">GitHub</a>
-                <a href="https://facebook.com/Zihad.Aurko" target="_blank">Facebook</a>
-                <a href="https://instagram.com/zihad_aurko" target="_blank">Instagram</a>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="logo" style="margin-bottom:30px;">ZH.</div>
+                    <p style="color:var(--muted); font-size:14px; line-height:1.7; max-width:300px;">Helping startups and business owners digitize their vision with elite performance code.</p>
+                </div>
+                <div>
+                    <h5 style="font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:30px; letter-spacing:0.1em;">Social</h5>
+                    <ul style="list-style:none; display:flex; flex-direction:column; gap:16px; font-size:13px;">
+                        <li><a href="https://github.com/zihad2003" target="_blank">GitHub</a></li>
+                        <li><a href="https://facebook.com/Zihad.Aurko" target="_blank">Facebook</a></li>
+                        <li><a href="https://instagram.com/zihad_aurko" target="_blank">Instagram</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 style="font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:30px; letter-spacing:0.1em;">Legal</h5>
+                    <ul style="list-style:none; display:flex; flex-direction:column; gap:16px; font-size:13px;">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
             </div>
-            <p class="copyright">© 2025 Md Zeaul Hoque Zihad. Built with passion in Bangladesh.</p>
+            <div class="footer-bottom">
+                <p style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;">© 2025 Md Zeaul Hoque Zihad. Built with passion in Bangladesh.</p>
+                <div style="font-size:10px; color:var(--muted); font-weight:700;">PROUDLY INDEPENDENT</div>
+            </div>
         </div>
     </footer>
 
-    <div id="toast">Copied to clipboard!</div>
+    <!-- Managed Features Backport (Subtle Gear Icon) -->
+    <div style="position:fixed; bottom:20px; left:20px; opacity:0.3; cursor:pointer;" onclick="adminPrompt()"><i data-lucide="settings" style="width:16px; color:var(--muted);"></i></div>
+    <div id="toast" style="position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:var(--accent); color:#000; padding:12px 24px; border-radius:4px; font-weight:700; opacity:0; transition:0.3s; pointer-events:none; z-index:9999;">COPIED!</div>
 
     <script>
-        // Init Lucide
         lucide.createIcons();
-
-        // Reveal animations
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // Counter animation
-        const counters = document.querySelectorAll('.counter');
-        counters.forEach(counter => {
-            const updateCount = () => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                const speed = 200;
-                const inc = target / speed;
-
-                if (count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(updateCount, 1);
-                } else {
-                    counter.innerText = target + '+';
-                }
-            };
-            
-            // Trigger counter when in view
-            const counterObserver = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting) {
-                    updateCount();
-                    counterObserver.disconnect();
-                }
-            });
-            counterObserver.observe(counter);
-        });
-
-        // FAQ Accordion
-        document.querySelectorAll('.faq-question').forEach(button => {
-            button.addEventListener('click', () => {
-                const faqItem = button.parentElement;
-                faqItem.classList.toggle('active');
-            });
-        });
-
-        // Copy Email
         function copyEmail() {
-            const email = "zhzihad2000@gmail.com";
-            navigator.clipboard.writeText(email).then(() => {
-                const toast = document.getElementById('toast');
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 2000);
+            navigator.clipboard.writeText("zhzihad2000@gmail.com").then(() => {
+                const toast = document.getElementById('toast'); toast.style.opacity = '1';
+                setTimeout(() => toast.style.opacity = '0', 2000);
             });
         }
+        function adminPrompt() { const p = prompt("Key:"); if(p==='zihad') alert("Managed Mode Active"); }
 
-        // Form Submission (Simulated)
-        document.getElementById('portfolio-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = this.querySelector('button');
-            const originalText = btn.innerText;
-            btn.innerText = "Sending...";
-            btn.disabled = true;
+        // AUTOMATIC SKILLS RENDERER
+        const skills = [
+            { name: "Frontend Mastery", icon: "monitor", level: "95%", tags: ["React.js", "Next.js", "Tailwind CSS", "Framer Motion"] },
+            { name: "Backend Logic", icon: "database", level: "88%", tags: ["Node.js", "Express", "Supabase", "PostgreSQL"] },
+            { name: "AI Integration", icon: "cpu", level: "82%", tags: ["OpenAI API", "HuggingFace", "Python", "RAG Systems"] },
+            { name: "Digital Design", icon: "framer", level: "90%", tags: ["Figma", "UI/UX", "Brand Identity", "Prototyping"] },
+            { name: "DevOps & Cloud", icon: "cloud", level: "85%", tags: ["AWS", "Vercel", "Docker", "CI/CD"] },
+            { name: "E-Commerce Systems", icon: "shopping-bag", level: "92%", tags: ["Stripe", "Auth Systems", "Inventory Logic", "Order Flows"] }
+        ];
 
+        function renderSkills() {
+            const container = document.getElementById('skills-container');
+            container.innerHTML = skills.map(skill => `
+                <div class="skill-card">
+                    <div class="skill-icon"><i data-lucide="${skill.icon}"></i></div>
+                    <h3 class="skill-name">${skill.name}</h3>
+                    <div class="skill-bar-wrap">
+                        <div class="skill-bar-fill" data-level="${skill.level}"></div>
+                    </div>
+                    <div class="skill-tags">
+                        ${skill.tags.map(tag => `<span class="skill-tag">${tag}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+            
+            // Trigger animation after a small delay
             setTimeout(() => {
-                alert("Message sent! I'll get back to you soon.");
-                btn.innerText = originalText;
-                btn.disabled = false;
-                this.reset();
-            }, 1500);
-        });
+                document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-level');
+                });
+            }, 500);
+        }
+
+        document.addEventListener('DOMContentLoaded', renderSkills);
     </script>
 </body>
 </html>
