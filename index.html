@@ -138,7 +138,6 @@ body.h-cursor #c-dot  { opacity:0; }
 /* ─── HERO ───────────────────────────────────────────── */
 #hero { position:relative; min-height:100vh; display:flex; align-items:center; padding-top:76px; overflow:hidden; }
 #hero-canvas { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0; }
-.hero-veil { position:absolute; inset:0; background:linear-gradient(120deg,rgba(6,6,10,.95) 40%,rgba(6,6,10,.3) 100%); z-index:1; pointer-events:none; }
 .hero-cnt { position:relative; z-index:2; max-width:800px; }
 .hero-avail { display:inline-flex; align-items:center; gap:10px; background:rgba(34,211,238,.08); border:1px solid rgba(34,211,238,.2); border-radius:40px; padding:7px 18px; font-size:11px; text-transform:uppercase; letter-spacing:.25em; color:var(--cyan); font-weight:700; margin-bottom:34px; }
 .avail-dot { width:7px; height:7px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan); animation:pulse 2s ease infinite; }
@@ -789,94 +788,92 @@ if (window.matchMedia('(pointer:fine)').matches) {
   ren.setPixelRatio(Math.min(devicePixelRatio, 2));
 
   // Lights
-  scene.add(new THREE.AmbientLight(0xffffff, .4));
-  const kl = new THREE.PointLight(0xd4a853, 6, 35); kl.position.set(8,5,4); scene.add(kl);
-  const vl = new THREE.PointLight(0x7c5cfc, 4, 35); vl.position.set(-7,-4,5); scene.add(vl);
-  const cl = new THREE.PointLight(0x22d3ee, 2, 30); cl.position.set(0,8,-2); scene.add(cl);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+  const kl = new THREE.PointLight(0xd4a853, 25, 50); kl.position.set(8, 5, 4); scene.add(kl);
+  const vl = new THREE.PointLight(0x7c5cfc, 20, 50); vl.position.set(-7, -4, 5); scene.add(vl);
+  const cl = new THREE.PointLight(0x22d3ee, 15, 40); cl.position.set(0, 8, -2); scene.add(cl);
+  
+  // Adding a sharp rim light for better definition
+  const rim = new THREE.SpotLight(0xffffff, 30);
+  rim.position.set(0, 10, 10);
+  scene.add(rim);
 
-  // Main shape — gold torus knot
-  const knot = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(1.35, .42, 200, 34),
-    new THREE.MeshStandardMaterial({ color:0xd4a853, roughness:.1, metalness:.95 })
-  );
-  knot.position.set(mob ? 0 : 3.6, 0, -1);
-  if(mob) knot.scale.setScalar(.6);
-  scene.add(knot);
+  // Main galaxy shapes removed (using Starfield only)
+  const galaxyGroup = new THREE.Group();
+  scene.add(galaxyGroup);
 
-  // Violet wireframe octahedron orbiting
-  const oct = new THREE.Mesh(
-    new THREE.OctahedronGeometry(3.2, 0),
-    new THREE.MeshBasicMaterial({ color:0x7c5cfc, wireframe:true, transparent:true, opacity:.07 })
-  );
-  scene.add(oct);
-
-  // Thin gold ring
-  const ring = new THREE.Mesh(
-    new THREE.TorusGeometry(2.2, .01, 8, 80),
-    new THREE.MeshBasicMaterial({ color:0xd4a853, transparent:true, opacity:.25 })
-  );
-  ring.rotation.x = Math.PI/2.4;
-  scene.add(ring);
-
-  // Floating mini orbs (gold + violet alternating)
-  const orbData = [
-    {r:.16, x:-3,  y:2.2,  z:-2.5, ph:0,    col:0xd4a853},
-    {r:.12, x:2.8, y:2.6,  z:-3,   ph:1.26,  col:0x7c5cfc},
-    {r:.20, x:-1,  y:-2.8, z:-2,   ph:2.51,  col:0xd4a853},
-    {r:.13, x:4.2, y:-1.4, z:-3,   ph:3.77,  col:0xa68dff},
-    {r:.09, x:-2.6,y:-1.6, z:-3.2, ph:5.03,  col:0x22d3ee},
-    {r:.15, x: 1.2,y: 3.2, z:-4,   ph:4.2,   col:0x7c5cfc},
-  ];
-  const orbs = orbData.map(d => {
-    const m = new THREE.Mesh(
-      new THREE.SphereGeometry(d.r,16,16),
-      new THREE.MeshStandardMaterial({color:d.col, roughness:.15, metalness:.9, transparent:true, opacity:.8})
-    );
-    m.position.set(d.x,d.y,d.z); m.userData=d; scene.add(m); return m;
-  });
-
-  // Particles — gold + violet mixed
-  const pN = mob ? 800 : 2000;
+  // Galaxy Particles — Balanced starfield
+  const pN = mob ? 1500 : 5000;
   const pos = new Float32Array(pN*3), col = new Float32Array(pN*3);
-  const gc=[0xd4/255,0xa8/255,0x53/255], vc=[0x7c/255,0x5c/255,0xfc/255];
-  for(let i=0;i<pN;i++){
-    const r=10+Math.random()*14, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
-    pos[i*3]=r*Math.sin(ph)*Math.cos(th); pos[i*3+1]=r*Math.sin(ph)*Math.sin(th); pos[i*3+2]=r*Math.cos(ph);
-    const c = Math.random()>.5 ? gc : vc;
-    col[i*3]=c[0]; col[i*3+1]=c[1]; col[i*3+2]=c[2];
+  const colors = [
+    new THREE.Color(0x7c5cfc), // Violet
+    new THREE.Color(0x22d3ee), // Cyan
+    new THREE.Color(0xffffff), // White
+  ];
+  
+  for(let i=0; i<pN; i++){
+    const i3 = i * 3;
+    const radius = Math.random() * 22;
+    const spinAngle = radius * 1.25;
+    const branchAngle = (i % 3) * ((2 * Math.PI) / 3);
+    
+    const randomX = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.25 * radius;
+    const randomY = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.15 * radius;
+    const randomZ = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.25 * radius;
+
+    pos[i3]     = Math.cos(spinAngle + branchAngle) * radius + randomX;
+    pos[i3 + 1] = randomY;
+    pos[i3 + 2] = Math.sin(spinAngle + branchAngle) * radius + randomZ;
+    
+    const mixedCol = colors[Math.floor(Math.random() * colors.length)].clone();
+    col[i3]     = mixedCol.r;
+    col[i3 + 1] = mixedCol.g;
+    col[i3 + 2] = mixedCol.b;
   }
   const pg = new THREE.BufferGeometry();
   pg.setAttribute('position', new THREE.BufferAttribute(pos,3));
   pg.setAttribute('color',    new THREE.BufferAttribute(col,3));
-  const pts = new THREE.Points(pg, new THREE.PointsMaterial({size:.045,vertexColors:true,transparent:true,opacity:.4}));
-  scene.add(pts);
+  const pts = new THREE.Points(pg, new THREE.PointsMaterial({
+    size: 0.035,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.45,
+    blending: THREE.AdditiveBlending
+  }));
+  galaxyGroup.add(pts);
+
+  // Background dust clouds — very subtle
+  const bgN = 1000;
+  const bgPos = new Float32Array(bgN*3);
+  for(let i=0; i<bgN; i++){
+    const r = 25 + Math.random() * 25;
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.acos(2 * Math.random() - 1);
+    bgPos[i*3] = r * Math.sin(ph) * Math.cos(th);
+    bgPos[i*3+1] = r * Math.sin(ph) * Math.sin(th);
+    bgPos[i*3+2] = r * Math.cos(ph);
+  }
+  const bgG = new THREE.BufferGeometry();
+  bgG.setAttribute('position', new THREE.BufferAttribute(bgPos,3));
+  const bgPts = new THREE.Points(bgG, new THREE.PointsMaterial({size:0.015, color:0x54526a, transparent:true, opacity:0.18}));
+  galaxyGroup.add(bgPts);
 
   let mx=0,my=0, t=0, rafId;
   if(!mob) document.addEventListener('mousemove', e=>{ mx=e.clientX/innerWidth-.5; my=e.clientY/innerHeight-.5; });
 
   function tick(){
     rafId=requestAnimationFrame(tick);
-    t+=.005;
-    knot.rotation.x=t*.38; knot.rotation.y=t*.6;
-    oct.rotation.y=t*.09;  oct.rotation.x=t*.06;
-    ring.rotation.z=t*.2;
+    t+=.0016;
+    
+    galaxyGroup.rotation.y = t * 0.04;
+    galaxyGroup.rotation.z = Math.sin(t * 0.3) * 0.03;
 
-    orbs.forEach(o=>{
-      const d=o.userData;
-      o.position.x=d.x+Math.sin(t*.55+d.ph)*.55;
-      o.position.y=d.y+Math.cos(t*.42+d.ph)*.45;
-      o.rotation.x+=.01; o.rotation.y+=.014;
-    });
-
-    pts.rotation.y+=.0003; pts.rotation.x+=.0001;
-
-    // Pulsing lights
-    kl.intensity=5+Math.sin(t*1.5)*.8;
-    vl.intensity=3.5+Math.cos(t*1.2)*.6;
+    pts.rotation.y += 0.0001;
+    bgPts.rotation.y += 0.00005;
 
     if(!mob){
-      cam.position.x+=(mx*1.5-cam.position.x)*.04;
-      cam.position.y+=(-my*.9-cam.position.y)*.04;
+      cam.position.x+=(mx*1.2-cam.position.x)*.025;
+      cam.position.y+=(-my*0.7-cam.position.y)*.025;
       cam.lookAt(0,0,0);
     }
     ren.render(scene,cam);
