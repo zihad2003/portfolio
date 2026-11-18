@@ -1,0 +1,119 @@
+---
+// src/components/WorkSection.astro
+import WorkScene from './WorkScene.astro';
+
+interface Project {
+  id: string;
+  number: string;
+  title: string;
+  status: string;
+  statusType: string;
+  year: string;
+  stack: string;
+  url: string | null;
+  type: string;
+  media?: string;
+  poster?: string;
+  bullets: string[];
+}
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<section id="work" class="work-showcase-section" aria-labelledby="work-title">
+  <div class="work-section-header">
+    <div class="header-inner">
+      <span class="section-label font-mono" id="work-title">[ WORK // THE SHOP WINDOWS ]</span>
+      <h2 class="work-headline font-display">
+        Verified Systems, Production Code & Lab Works
+      </h2>
+    </div>
+  </div>
+
+  <div class="scenes-container" id="scenes-container">
+    {projects.map((project, idx) => (
+      <WorkScene
+        project={project}
+        index={idx}
+        total={projects.length}
+      />
+    ))}
+  </div>
+</section>
+
+<style>
+  .work-showcase-section {
+    position: relative;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .work-section-header {
+    border-bottom: 1px solid var(--color-hairline);
+    padding: clamp(60px, 8vw, 100px) 0 clamp(30px, 4vw, 50px);
+  }
+
+  .header-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding-x);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .work-headline {
+    font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+    color: var(--color-bone);
+    font-style: italic;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .scenes-container {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+
+<script>
+  (function () {
+    const scenes = document.querySelectorAll('.work-scene');
+    if (!scenes.length) return;
+
+    // Intersection observer for scene activation and video play/pause
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const scene = entry.target as HTMLElement;
+          const video = scene.querySelector('.scene-video') as HTMLVideoElement | null;
+          const numberFill = scene.querySelector('.scene-number-fill') as HTMLElement | null;
+
+          if (entry.isIntersecting) {
+            scene.classList.add('is-in-view');
+            if (video && video.paused) {
+              video.play().catch(() => {});
+            }
+            if (numberFill) {
+              numberFill.style.clipPath = 'inset(0% 0 0 0)';
+            }
+          } else {
+            scene.classList.remove('is-in-view');
+            if (video && !video.paused) {
+              video.pause();
+            }
+            if (numberFill) {
+              numberFill.style.clipPath = 'inset(100% 0 0 0)';
+            }
+          }
+        });
+      },
+      { threshold: [0.15, 0.6] }
+    );
+
+    scenes.forEach((scene) => observer.observe(scene));
+  })();
+</script>

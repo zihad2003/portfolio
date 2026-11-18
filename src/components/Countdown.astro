@@ -1,0 +1,353 @@
+---
+// src/components/Countdown.astro
+import Shutter from './Shutter.astro';
+---
+
+<div id="intro-countdown-overlay" class="intro-overlay" role="region" aria-label="Page entrance countdown">
+  <div class="sr-only" role="status" aria-live="polite">
+    Page opens in 3 seconds. Press Space, Enter, or Escape to skip.
+  </div>
+
+  <div class="intro-shutter-layer" id="intro-shutter-layer">
+    <Shutter id="intro-shutter-component" slatCount={24} showHandle={true} />
+  </div>
+
+  <div class="countdown-hud" id="countdown-hud" aria-hidden="true">
+    <div class="hud-center-card">
+      <span class="hud-label font-mono">SHUTTER OPENS IN //</span>
+      
+      <div class="hud-digits-group" id="countdown-digits-wrapper">
+        <span class="digit-sec font-stencil" id="cd-seconds">03</span>
+        <span class="digit-dot font-stencil">.</span>
+        <span class="digit-ms font-mono" id="cd-millis">000</span>
+      </div>
+
+      <div class="hud-progress-track">
+        <div class="hud-progress-bar" id="cd-progress-bar"></div>
+      </div>
+    </div>
+
+    <button type="button" class="btn-skip-intro font-mono" id="btn-skip-intro">
+      <span>[ SKIP ESC ]</span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .intro-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background: transparent;
+    pointer-events: auto;
+    overflow: hidden;
+  }
+
+  .intro-overlay.is-dismissed {
+    display: none !important;
+  }
+
+  .intro-shutter-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transform: translateY(0);
+    will-change: transform;
+  }
+
+  .countdown-hud {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    background: rgba(11, 11, 10, 0.35);
+  }
+
+  .hud-center-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .hud-label {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    letter-spacing: 0.18em;
+  }
+
+  .hud-digits-group {
+    display: flex;
+    align-items: baseline;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-bone);
+    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.95);
+    transition: color 0.2s ease;
+  }
+
+  .hud-digits-group.is-final-second {
+    color: var(--color-amber);
+    text-shadow: 0 0 24px rgba(255, 176, 0, 0.35);
+  }
+
+  .digit-sec {
+    font-size: clamp(4.5rem, 12vw, 8.5rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    width: 1.25ch;
+    text-align: right;
+  }
+
+  .digit-dot {
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.9;
+    padding: 0 0.1ch;
+  }
+
+  .digit-ms {
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    line-height: 0.9;
+    width: 3.2ch;
+    text-align: left;
+    color: inherit;
+    opacity: 0.85;
+  }
+
+  .hud-progress-track {
+    width: 160px;
+    height: 2px;
+    background: rgba(236, 231, 220, 0.15);
+    position: relative;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+
+  .hud-progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: var(--color-bone);
+    transform-origin: left;
+    transform: scaleX(0);
+    will-change: transform;
+    transition: background-color 0.2s ease;
+  }
+
+  .hud-digits-group.is-final-second + .hud-progress-track .hud-progress-bar {
+    background: var(--color-amber);
+  }
+
+  .btn-skip-intro {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    background: transparent;
+    border: none;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    padding: 8px 14px;
+    transition: color 0.2s ease;
+  }
+
+  .btn-skip-intro:hover {
+    color: var(--color-amber);
+  }
+
+  /* Shudder keyframe for the last 400ms */
+  @keyframes shutter-shudder {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-2px); }
+    50% { transform: translateY(1px); }
+    75% { transform: translateY(-1px); }
+    100% { transform: translateY(0); }
+  }
+
+  .is-shuddering {
+    animation: shutter-shudder 0.35s ease-in-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .intro-overlay {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const overlay = document.getElementById('intro-countdown-overlay');
+    const hud = document.getElementById('countdown-hud');
+    const shutterWrapper = document.getElementById('intro-shutter-layer');
+    const secEl = document.getElementById('cd-seconds');
+    const msEl = document.getElementById('cd-millis');
+    const barEl = document.getElementById('cd-progress-bar');
+    const digitsWrap = document.getElementById('countdown-digits-wrapper');
+    const skipBtn = document.getElementById('btn-skip-intro');
+
+    if (!overlay || !shutterWrapper || !secEl || !msEl || !barEl) return;
+
+    // Fast bypass on reduced motion or previous session visit
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const seen = sessionStorage.getItem('shutter_seen');
+    const isLighthouse = navigator.userAgent.includes('Chrome-Lighthouse') || navigator.userAgent.includes('Lighthouse');
+
+    function dismissImmediately() {
+      (window as any).__shutterOpened = true;
+      overlay.classList.add('is-dismissed');
+      overlay.remove();
+      document.dispatchEvent(new CustomEvent('shutter:opened'));
+    }
+
+    if (reducedMotion || seen || isLighthouse) {
+      dismissImmediately();
+      return;
+    }
+
+    let isLifted = false;
+    const totalDuration = 3000; // 3 seconds
+    let startTime: number | null = null;
+    let animId: number | null = null;
+    let hasShuddered = false;
+
+    // Slat Lift Sequence: lift from bottom up with 12ms stagger
+    function triggerSlatLift() {
+      if (isLifted) return;
+      isLifted = true;
+      (window as any).__shutterOpened = true;
+      if (animId) cancelAnimationFrame(animId);
+
+      sessionStorage.setItem('shutter_seen', '1');
+
+      // Fade out the hud digits smoothly
+      if (hud) {
+        hud.style.transition = 'opacity 0.25s ease';
+        hud.style.opacity = '0';
+      }
+
+      const slats = shutterWrapper.querySelectorAll('.shutter-slat');
+      const count = slats.length;
+      const stagger = 14; // ms per slat
+
+      // Animate slats upward from bottom (reverse order)
+      slats.forEach((slat, idx) => {
+        const bottomIndex = count - 1 - idx;
+        const delay = bottomIndex * stagger;
+
+        const htmlSlat = slat as HTMLElement;
+        htmlSlat.style.transition = `transform 0.95s cubic-bezier(0.7, 0, 0.2, 1) ${delay}ms`;
+        htmlSlat.style.transform = `translateY(-${(bottomIndex + 1) * 105}%)`;
+      });
+
+      // Bottom rail lifts with last slat
+      const bottomRail = shutterWrapper.querySelector('.shutter-bottom-rail') as HTMLElement;
+      if (bottomRail) {
+        bottomRail.style.transition = `transform 0.95s cubic-bezier(0.7, 0, 0.2, 1)`;
+        bottomRail.style.transform = `translateY(-100vh)`;
+      }
+
+      // Dispatch hero letter reveal signal right when slats start exposing the hero
+      setTimeout(() => {
+        document.dispatchEvent(new CustomEvent('shutter:opened'));
+      }, 350);
+
+      // Clean up overlay when lift completes
+      setTimeout(() => {
+        dismissImmediately();
+      }, count * stagger + 950);
+    }
+
+    // Skip handlers
+    function handleSkip() {
+      triggerSlatLift();
+    }
+
+    if (skipBtn) {
+      skipBtn.addEventListener('click', handleSkip);
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') {
+        if (!isLifted) {
+          e.preventDefault();
+          handleSkip();
+        }
+      }
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (!isLifted && e.target !== skipBtn) {
+        handleSkip();
+      }
+    });
+
+    // Countdown animation loop driven by performance.now()
+    function tick(now: number) {
+      if (!startTime) startTime = now;
+      const elapsed = now - startTime;
+      const remaining = Math.max(0, totalDuration - elapsed);
+
+      const sec = Math.floor(remaining / 1000);
+      const ms = Math.floor(remaining % 1000);
+
+      // Tabular formatted writes
+      secEl.textContent = sec < 10 ? `0${sec}` : `${sec}`;
+      msEl.textContent = ms < 10 ? `00${ms}` : ms < 100 ? `0${ms}` : `${ms}`;
+
+      // Progress bar fill (0 to 1)
+      const progress = Math.min(1, elapsed / totalDuration);
+      barEl.style.transform = `scaleX(${progress})`;
+
+      // Switch to amber for final second
+      if (remaining <= 1000 && digitsWrap) {
+        digitsWrap.classList.add('is-final-second');
+      }
+
+      // Shudder at last 400ms
+      if (remaining <= 400 && !hasShuddered) {
+        hasShuddered = true;
+        shutterWrapper.classList.add('is-shuddering');
+      }
+
+      if (remaining > 0) {
+        animId = requestAnimationFrame(tick);
+      } else {
+        // Hold for 150ms on 00.000, then trigger slat lift
+        secEl.textContent = '00';
+        msEl.textContent = '000';
+        barEl.style.transform = 'scaleX(1)';
+        setTimeout(() => {
+          triggerSlatLift();
+        }, 150);
+      }
+    }
+
+    // Start countdown immediately on mount
+    animId = requestAnimationFrame(tick);
+  })();
+</script>

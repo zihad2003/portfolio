@@ -1,0 +1,135 @@
+{
+  "person": {
+    "name": "MD. Zeaul Hoque Zihad",
+    "shortName": "Zihad",
+    "roles": "Developer. Store owner. CSE student '27.",
+    "headline": "Full-stack developer. AI-integrated web applications.",
+    "location": "Dhaka, Bangladesh",
+    "statements": [
+      {
+        "index": "1 of 4",
+        "lead": "I am a full-stack developer.",
+        "highlight": "full-stack developer"
+      },
+      {
+        "index": "2 of 4",
+        "lead": "I run a real fashion store in Baraiyarhat, and I wrote the software it runs on.",
+        "highlight": "real fashion store in Baraiyarhat"
+      },
+      {
+        "index": "3 of 4",
+        "lead": "I build with AI in the loop: Claude Code, Cursor, the Claude and Gemini APIs.",
+        "highlight": "AI in the loop"
+      },
+      {
+        "index": "4 of 4",
+        "lead": "Fourth year CSE at UIU. Graduating October 2027.",
+        "highlight": "Graduating October 2027"
+      }
+    ],
+    "education": "B.Sc. in CSE, United International University, Dhaka. Expected October 2027.",
+    "stack": "JavaScript, TypeScript, Python, Java, SQL / React, Next.js, Node.js, Express, Hono, FastAPI, Spring Boot / MySQL, TiDB, Cloudflare D1 / Git, GitHub, Cloudflare, Cloudinary, n8n / Claude and Gemini APIs, Ollama"
+  },
+  "projects": [
+    {
+      "id": "big-bazar",
+      "number": "01",
+      "title": "Big Bazar Baraiyarhat",
+      "status": "Live",
+      "statusType": "live",
+      "year": "2025–Present",
+      "stack": "React, Vite, Node.js, Cloudinary",
+      "url": "https://onlinebigbazar.com",
+      "type": "video",
+      "media": "/media/bigbazar-preview.mp4",
+      "poster": "/media/bigbazar-poster.webp",
+      "bullets": [
+        "Online fashion shop with 130+ products, shopping cart, and custom checkout (COD, bKash, bank transfer).",
+        "Custom admin panel with role-based access control, login rate limiting, and order fulfillment workflows.",
+        "Engineered inventory sync to stop overselling; completed full hosting and database infrastructure migrations."
+      ]
+    },
+    {
+      "id": "shadow-palette",
+      "number": "02",
+      "title": "Shadow Palette: Stealth & Siege",
+      "status": "University project",
+      "statusType": "academic",
+      "year": "2024",
+      "stack": "Spring Boot, MySQL, JavaScript",
+      "url": "https://shadow-palette.vercel.app/",
+      "type": "video",
+      "media": "/media/shadow-palette-preview.mp4",
+      "poster": "/media/shadow-palette-poster.webp",
+      "bullets": [
+        "3D multiplayer strategy game where players construct fortified bases and raid enemy installations.",
+        "Engineered REST backend utilizing State, Factory, Strategy, and Observer design patterns.",
+        "Built and deployed as an Advanced Object-Oriented Programming (AOOP) team course capstone."
+      ]
+    },
+    {
+      "id": "bigbazar-agent",
+      "number": "03",
+      "title": "BigBazar AI Messenger Sales Agent",
+      "status": "In development",
+      "statusType": "dev",
+      "year": "2025–Present",
+      "stack": "Node.js, Express, Ollama, MySQL",
+      "url": null,
+      "type": "diagram",
+      "bullets": [
+        "Automated sales agent on Facebook Messenger: answers product inquiries, records advance payments, and issues receipts.",
+        "Architected to handle peak traffic of 10,000 to 40,000 incoming customer messages on busy retail days.",
+        "Integrated n8n automated replies across Messenger and Instagram, plus Gemini API for product recognition from video reels."
+      ]
+    },
+    {
+      "id": "algomind",
+      "number": "04",
+      "title": "AlgoMind",
+      "status": "University project",
+      "statusType": "academic",
+      "year": "2024",
+      "stack": "FastAPI, Next.js, Claude API",
+      "url": "https://github.com/zihad2003",
+      "type": "diagram",
+      "bullets": [
+        "Step-by-step interactive visualization of BFS, DFS, Dijkstra, A*, Bellman-Ford, and Kruskal algorithms.",
+        "AI tutor powered by Claude API generating contextual hints, real-time code explanations, and dynamic quizzes.",
+        "Developed as a team project for the Artificial Intelligence Laboratory at UIU."
+      ]
+    },
+    {
+      "id": "mutesound",
+      "number": "05",
+      "title": "MuteSound",
+      "status": "Personal use",
+      "statusType": "personal",
+      "year": "2024",
+      "stack": "Chrome Extension, JavaScript",
+      "url": null,
+      "type": "diagram",
+      "bullets": [
+        "Lightweight Chrome extension that silences active browser audio during prayer Azan time.",
+        "In active daily personal use; native cross-platform application version currently in development.",
+        "Built strictly for personal daily workflow; unpublished."
+      ]
+    }
+  ],
+  "contact": {
+    "phone": "+880 1857 045449",
+    "phoneRaw": "+8801857045449",
+    "email": "zhzihad2000@gmail.com",
+    "github": "https://github.com/zihad2003",
+    "githubDisplay": "github.com/zihad2003",
+    "linkedin": "https://linkedin.com/in/md-zeaul-hoque-zihad-5131a0294",
+    "linkedinDisplay": "linkedin.com/in/md-zeaul-hoque-zihad-5131a0294",
+    "location": "Dhaka, Bangladesh"
+  },
+  "site": {
+    "title": "MD. Zeaul Hoque Zihad — Developer. Store owner. CSE student '27.",
+    "description": "Full-stack developer. AI-integrated web applications. 4th-year CSE at UIU. Lead developer of Big Bazar Baraiyarhat.",
+    "url": "https://zship-895.pages.dev",
+    "year": 2026
+  }
+}

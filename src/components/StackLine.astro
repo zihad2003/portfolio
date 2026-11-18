@@ -1,0 +1,104 @@
+---
+// src/components/StackLine.astro
+interface Props {
+  stack: string;
+}
+
+const { stack } = Astro.props;
+---
+
+<section id="stack" class="stack-section" aria-label="Technical Stack">
+  <div class="stack-inner">
+    <div class="stack-top-hairline">
+      <div class="hairline-fill"></div>
+    </div>
+
+    <div class="stack-content">
+      <span class="section-label font-mono">[ STACK // RAW CAPABILITIES ]</span>
+      <p class="stack-line font-mono">
+        {stack}
+      </p>
+    </div>
+
+    <div class="stack-bottom-hairline">
+      <div class="hairline-fill"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stack-section {
+    padding: clamp(60px, 8vw, 100px) 0;
+    position: relative;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .stack-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding-x);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .stack-top-hairline,
+  .stack-bottom-hairline {
+    width: 100%;
+    height: 1px;
+    background: var(--color-hairline);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hairline-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: var(--color-bone);
+    opacity: 0.35;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stack-section.is-in-view .hairline-fill {
+    transform: scaleX(1);
+  }
+
+  .stack-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .stack-line {
+    font-size: clamp(1rem, 2vw, 1.45rem);
+    color: var(--color-bone);
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+    word-break: break-word;
+  }
+</style>
+
+<script>
+  (function () {
+    const section = document.getElementById('stack');
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            section.classList.add('is-in-view');
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(section);
+  })();
+</script>

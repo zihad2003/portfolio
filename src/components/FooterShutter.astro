@@ -1,0 +1,292 @@
+---
+// src/components/FooterShutter.astro
+import Shutter from './Shutter.astro';
+
+interface Contact {
+  phone: string;
+  phoneRaw: string;
+  email: string;
+  github: string;
+  githubDisplay: string;
+  linkedin: string;
+  linkedinDisplay: string;
+  location: string;
+}
+
+interface Props {
+  contact: Contact;
+  year: number;
+  name: string;
+}
+
+const { contact, year, name } = Astro.props;
+---
+
+<footer id="contact" class="footer-shutter-section" aria-label="Closing Shutter & Contact Details">
+  <div class="footer-shutter-outer">
+    <!-- Reusable Shutter Component as background & landing mechanism -->
+    <div class="footer-shutter-layer" id="footer-shutter-layer">
+      <Shutter id="footer-shutter-component" slatCount={24} showHandle={true} />
+    </div>
+
+    <!-- Stencil Painted Content -->
+    <div class="footer-content-stage">
+      <div class="footer-inner">
+        <div class="footer-header font-mono">
+          <span class="lock-status-indicator">[ SHUTTER CLOSED // CHANNELS RECORDED ]</span>
+        </div>
+
+        <div class="stencil-contacts-stack">
+          <!-- TEL -->
+          <a href={`tel:${contact.phoneRaw}`} class="stencil-row" id="row-tel">
+            <span class="stencil-prefix font-mono">TEL //</span>
+            <span class="stencil-text font-stencil" data-text={contact.phone}>{contact.phone}</span>
+          </a>
+
+          <!-- MAIL -->
+          <a href={`mailto:${contact.email}`} class="stencil-row" id="row-mail">
+            <span class="stencil-prefix font-mono">MAIL //</span>
+            <span class="stencil-text font-stencil" data-text={contact.email}>{contact.email}</span>
+          </a>
+
+          <!-- GIT -->
+          <a href={contact.github} target="_blank" rel="noopener noreferrer" class="stencil-row" id="row-git">
+            <span class="stencil-prefix font-mono">GIT //</span>
+            <span class="stencil-text font-stencil" data-text={contact.githubDisplay}>{contact.githubDisplay}</span>
+          </a>
+
+          <!-- IN -->
+          <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" class="stencil-row" id="row-in">
+            <span class="stencil-prefix font-mono">IN //</span>
+            <span class="stencil-text font-stencil" data-text={contact.linkedinDisplay}>{contact.linkedinDisplay}</span>
+          </a>
+
+          <!-- LOC -->
+          <div class="stencil-row is-static" id="row-loc">
+            <span class="stencil-prefix font-mono">LOC //</span>
+            <span class="stencil-text font-stencil" data-text={contact.location}>{contact.location}</span>
+          </div>
+        </div>
+
+        <div class="footer-bottom-bar font-mono">
+          <p class="copyright-line">© {year} {name}. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-shutter-section {
+    position: relative;
+    width: 100%;
+    margin-top: 4rem;
+    overflow: hidden;
+    background: #090908;
+  }
+
+  .footer-shutter-outer {
+    position: relative;
+    width: 100%;
+    min-height: clamp(550px, 70vh, 850px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .footer-shutter-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transform: translateY(-40px);
+    opacity: 0.85;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .footer-shutter-section.is-settled .footer-shutter-layer {
+    transform: translateY(0);
+  }
+
+  .footer-content-stage {
+    position: relative;
+    z-index: 2;
+    padding: clamp(80px, 12vw, 140px) 0 clamp(48px, 6vw, 80px);
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding-x);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .footer-header {
+    border-bottom: 1px solid rgba(236, 231, 220, 0.1);
+    padding-bottom: 1rem;
+  }
+
+  .lock-status-indicator {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    letter-spacing: 0.16em;
+  }
+
+  /* Stencil Rows Stack */
+  .stencil-contacts-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stencil-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(236, 231, 220, 0.06);
+    position: relative;
+    text-decoration: none;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  }
+
+  @media (min-width: 640px) {
+    .stencil-row {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 2.5rem;
+    }
+  }
+
+  .stencil-prefix {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    letter-spacing: 0.14em;
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+
+  .stencil-text {
+    font-size: clamp(1.8rem, 4.4vw, 4.2rem);
+    color: var(--color-bone);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    position: relative;
+    display: inline-block;
+    word-break: break-all;
+    user-select: text;
+  }
+
+  /* Wet-paint amber fill sweep on hover/focus */
+  .stencil-row:not(.is-static)::before {
+    content: attr(data-text);
+  }
+
+  .stencil-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: var(--color-amber);
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .stencil-row:hover:not(.is-static) .stencil-text::after,
+  .stencil-row:focus-visible:not(.is-static) .stencil-text::after {
+    clip-path: inset(0 0 0 0);
+  }
+
+  .stencil-row:hover:not(.is-static) {
+    border-color: rgba(255, 176, 0, 0.3);
+  }
+
+  .stencil-row.is-static .stencil-text {
+    color: #a39e93;
+  }
+
+  .footer-bottom-bar {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(236, 231, 220, 0.08);
+  }
+
+  .copyright-line {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    letter-spacing: 0.06em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-shutter-layer {
+      transform: none !important;
+      transition: none !important;
+    }
+    .stencil-text::after {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const footer = document.getElementById('contact');
+    const shutterLayer = document.getElementById('footer-shutter-layer');
+    if (!footer || !shutterLayer) return;
+
+    // WAAPI damped bounce on landing: 6px, 2 oscillations
+    let hasSettled = false;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasSettled) {
+            hasSettled = true;
+            footer.classList.add('is-settled');
+
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && shutterLayer.animate) {
+              shutterLayer.animate(
+                [
+                  { transform: 'translateY(-20px)' },
+                  { transform: 'translateY(6px)' },
+                  { transform: 'translateY(-3px)' },
+                  { transform: 'translateY(1px)' },
+                  { transform: 'translateY(0px)' }
+                ],
+                {
+                  duration: 550,
+                  easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)',
+                  fill: 'forwards'
+                }
+              );
+            }
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(footer);
+
+    // Desktop hover pointer shift (shifts toward pointer up to 6px)
+    if (window.matchMedia('(min-width: 900px) and (hover: hover)').matches) {
+      const rows = footer.querySelectorAll('.stencil-row:not(.is-static)');
+      rows.forEach((row) => {
+        row.addEventListener('mousemove', (e) => {
+          const rect = (row as HTMLElement).getBoundingClientRect();
+          const mouseX = (e as MouseEvent).clientX - rect.left;
+          const shift = (mouseX / rect.width - 0.5) * 12; // -6px to +6px
+          (row as HTMLElement).style.transform = `translateX(${shift}px)`;
+        });
+
+        row.addEventListener('mouseleave', () => {
+          (row as HTMLElement).style.transform = 'translateX(0px)';
+        });
+      });
+    }
+  })();
+</script>

@@ -1,0 +1,309 @@
+---
+// src/components/WhatIAm.astro
+interface Statement {
+  index: string;
+  lead: string;
+  highlight: string;
+}
+
+interface Props {
+  statements: Statement[];
+}
+
+const { statements } = Astro.props;
+---
+
+<section id="what-i-am" class="statements-section" aria-label="Who I Am">
+  <div class="pinned-track" id="statements-track">
+    <div class="pinned-viewport">
+      <div class="statements-inner">
+        <!-- Left rail: 1 of 4 indicator -->
+        <div class="rail-indicator font-mono">
+          <div class="rail-tick-wrapper">
+            <span class="active-tick" id="statement-tick"></span>
+            <div class="rail-line"></div>
+          </div>
+          <span class="current-step-label" id="statement-step-label">1 OF 4</span>
+        </div>
+
+        <!-- Center: 4 statements stacked -->
+        <div class="statements-stage">
+          {statements.map((item, idx) => {
+            // Split statement around the highlight string
+            const parts = item.lead.split(item.highlight);
+            return (
+              <div
+                class={`statement-item font-display ${idx === 0 ? 'is-active' : ''}`}
+                data-statement-index={idx}
+                id={`stmt-${idx}`}
+              >
+                <p class="statement-text">
+                  {parts[0]}
+                  <span class="underlined-keyword">
+                    {item.highlight}
+                    <span class="amber-draw-line" aria-hidden="true"></span>
+                  </span>
+                  {parts[1] || ''}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .statements-section {
+    position: relative;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  /* Pinned viewport */
+  @media (min-width: 900px) {
+    .statements-section {
+      min-height: clamp(650px, 120vh, 1200px);
+    }
+
+    .pinned-track {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      max-height: 850px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+  }
+
+  .pinned-viewport {
+    width: 100%;
+  }
+
+  .statements-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: clamp(60px, 8vw, 100px) var(--page-padding-x);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .statements-inner {
+      grid-template-columns: 140px 1fr;
+      gap: 4rem;
+    }
+  }
+
+  /* Left Rail Indicator */
+  .rail-indicator {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 900px) {
+    .rail-indicator {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+  }
+
+  .rail-tick-wrapper {
+    width: 2px;
+    height: 80px;
+    background: var(--color-hairline);
+    position: relative;
+  }
+
+  .active-tick {
+    position: absolute;
+    top: 0;
+    left: -2px;
+    width: 6px;
+    height: 20px;
+    background: var(--color-amber);
+    box-shadow: 0 0 10px var(--color-amber);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .current-step-label {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    letter-spacing: 0.16em;
+  }
+
+  /* Statements Stage */
+  .statements-stage {
+    position: relative;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  @media (min-width: 900px) {
+    .statements-stage {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+    }
+  }
+
+  .statement-item {
+    font-size: clamp(2rem, 4.4vw, 3.8rem);
+    color: var(--color-bone);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+
+  @media (min-width: 900px) {
+    .statement-item {
+      grid-column: 1;
+      grid-row: 1;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(24px);
+      pointer-events: none;
+      transition: opacity 0.45s ease, transform 0.45s ease, visibility 0.45s;
+    }
+
+    .statement-item.is-active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .statements-section {
+      height: auto !important;
+      padding: clamp(48px, 8vw, 80px) 0;
+    }
+    .pinned-track {
+      position: static !important;
+      height: auto !important;
+    }
+    .statements-stage {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 2.5rem !important;
+    }
+    .statement-item {
+      opacity: 1 !important;
+      transform: none !important;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--color-hairline);
+    }
+    .amber-draw-line {
+      transform: scaleX(1) !important;
+    }
+  }
+
+  .underlined-keyword {
+    position: relative;
+    display: inline-block;
+    color: var(--color-bone);
+    white-space: normal;
+  }
+
+  .amber-draw-line {
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 2px;
+    background: var(--color-amber);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 8px rgba(255, 176, 0, 0.3);
+  }
+
+  .statement-item.is-active .amber-draw-line {
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .statements-section {
+      height: auto !important;
+      padding: clamp(60px, 8vw, 100px) 0 !important;
+    }
+    .pinned-track {
+      position: static !important;
+      height: auto !important;
+    }
+    .statements-stage {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 3.5rem !important;
+    }
+    .statement-item {
+      grid-column: auto !important;
+      grid-row: auto !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .amber-draw-line {
+      transform: scaleX(1) !important;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const section = document.getElementById('what-i-am');
+    const items = document.querySelectorAll('.statement-item');
+    const tick = document.getElementById('statement-tick');
+    const stepLabel = document.getElementById('statement-step-label');
+
+    if (!section || !items.length || window.innerWidth < 900) return;
+
+    let ticking = false;
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const rect = section.getBoundingClientRect();
+        const totalTravel = section.offsetHeight - window.innerHeight;
+        if (totalTravel <= 0) {
+          ticking = false;
+          return;
+        }
+
+        const progress = Math.max(0, Math.min(1, -rect.top / totalTravel));
+        const index = Math.min(items.length - 1, Math.floor(progress * items.length));
+
+        items.forEach((item, idx) => {
+          if (idx === index) {
+            item.classList.add('is-active');
+          } else {
+            item.classList.remove('is-active');
+          }
+        });
+
+        if (tick) {
+          tick.style.transform = `translateY(${index * 20}px)`;
+        }
+        if (stepLabel) {
+          stepLabel.textContent = `${index + 1} OF ${items.length}`;
+        }
+
+        ticking = false;
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>

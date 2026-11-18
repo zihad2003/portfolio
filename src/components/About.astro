@@ -1,0 +1,118 @@
+---
+// src/components/About.astro
+interface Props {
+  bioParagraphs: string[];
+  education: string;
+  stack: string;
+}
+
+const { bioParagraphs, education, stack } = Astro.props;
+---
+
+<section id="about" class="about-section" aria-labelledby="about-heading">
+  <div class="about-inner">
+    <div class="about-grid">
+      <div class="about-label-col">
+        <span id="about-heading" class="section-label">[ 01 // ABOUT ]</span>
+      </div>
+      <div class="about-content-col">
+        <div class="about-prose font-body">
+          {bioParagraphs.map((para) => (
+            <p>{para}</p>
+          ))}
+        </div>
+
+        <div class="about-meta-block">
+          <div class="meta-row">
+            <span class="meta-title font-mono">Education</span>
+            <span class="meta-val font-body">{education}</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-title font-mono">Stack</span>
+            <span class="meta-val font-mono stack-text">{stack}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-section {
+    padding: var(--section-padding-y) 0;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .about-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding-x);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .about-grid {
+      grid-template-columns: minmax(160px, 220px) 1fr;
+      gap: 3.5rem;
+    }
+  }
+
+  .about-prose {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 48rem;
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    color: var(--color-bone);
+    line-height: 1.7;
+    font-weight: 350;
+  }
+
+  .about-meta-block {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 50rem;
+  }
+
+  .meta-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .meta-row {
+      grid-template-columns: 120px 1fr;
+      gap: 1.5rem;
+      align-items: baseline;
+    }
+  }
+
+  .meta-title {
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .meta-val {
+    color: var(--color-bone);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .stack-text {
+    font-size: 0.825rem;
+    color: #cfcac0;
+    line-height: 1.75;
+  }
+</style>

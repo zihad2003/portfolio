@@ -1,0 +1,101 @@
+---
+// src/layouts/BaseLayout.astro
+import '../styles/variables.css';
+import '../styles/reset.css';
+import '../styles/typography.css';
+import '../styles/shutter.css';
+
+interface Props {
+  title: string;
+  description: string;
+  url: string;
+  personName: string;
+}
+
+const { title, description, url, personName } = Astro.props;
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": personName,
+  "alternateName": "Zihad",
+  "jobTitle": "Full-stack Developer",
+  "alumniOf": {
+    "@type": "EducationalOrganization",
+    "name": "United International University"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Dhaka",
+    "addressCountry": "BD"
+  },
+  "email": "mailto:zhzihad2000@gmail.com",
+  "telephone": "+8801857045449",
+  "sameAs": [
+    "https://github.com/zihad2003",
+    "https://linkedin.com/in/md-zeaul-hoque-zihad-5131a0294",
+    "https://onlinebigbazar.com"
+  ]
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0b0a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={personName} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Preconnect & Asynchronous Fonts Load -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@700;800;900&family=Instrument+Serif:ital@0;1&family=Inter+Tight:ital,wght@0,300..700;1,300..700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@700;800;900&family=Instrument+Serif:ital@0;1&family=Inter+Tight:ital,wght@0,300..700;1,300..700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@700;800;900&family=Instrument+Serif:ital@0;1&family=Inter+Tight:ital,wght@0,300..700;1,300..700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+      />
+    </noscript>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+  </head>
+  <body>
+    <!-- Accessibility Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Fixed Film Grain Layer -->
+    <div class="grain-overlay" aria-hidden="true"></div>
+
+    <slot />
+  </body>
+</html>

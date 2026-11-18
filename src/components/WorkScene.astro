@@ -1,0 +1,595 @@
+---
+// src/components/WorkScene.astro
+interface Project {
+  id: string;
+  number: string;
+  title: string;
+  status: string;
+  statusType: string;
+  year: string;
+  stack: string;
+  url: string | null;
+  type: string;
+  media?: string;
+  poster?: string;
+  bullets: string[];
+}
+
+interface Props {
+  project: Project;
+  index: number;
+  total: number;
+}
+
+const { project, index, total } = Astro.props;
+---
+
+<article class="work-scene" id={`scene-${project.id}`} data-scene-index={index}>
+  <div class="scene-inner">
+    <!-- Right edge rail for desktop (5 ticks) -->
+    <div class="scene-ticks-rail font-mono" aria-hidden="true">
+      <div class="ticks-list">
+        {Array.from({ length: total }, (_, i) => (
+          <span class={`tick-point ${i === index ? 'is-current' : ''}`}></span>
+        ))}
+      </div>
+      <span class="scene-counter-label">{index + 1} / {total}</span>
+    </div>
+
+    <div class="scene-layout-grid">
+      <!-- Left Column: Typographic Details -->
+      <div class="scene-text-col">
+        <div class="scene-num-wrapper">
+          <span class="scene-number-outline font-stencil">{project.number}</span>
+          <span class="scene-number-fill font-stencil" aria-hidden="true">{project.number}</span>
+        </div>
+
+        <div class="scene-header-group">
+          <div class="scene-status-row font-mono">
+            <span class={`status-dot dot-${project.statusType}`} aria-hidden="true"></span>
+            <span class="status-name">{project.status}</span>
+            <span class="status-sep">//</span>
+            <span class="status-year">{project.year}</span>
+          </div>
+
+          <h3 class="scene-title font-display">
+            {project.title}
+          </h3>
+        </div>
+
+        <div class="scene-stack-row font-mono">
+          <span class="stack-prefix">STACK //</span>
+          <span class="stack-text">{project.stack}</span>
+        </div>
+
+        <ul class="scene-bullets font-body">
+          {project.bullets.map((bullet) => (
+            <li>
+              <span class="bullet-marker" aria-hidden="true">—</span>
+              <span>{bullet}</span>
+            </li>
+          ))}
+        </ul>
+
+        {project.url && (
+          <div class="scene-action-row">
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-open-live font-mono"
+            >
+              <span>Open live site</span>
+              <span class="btn-arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        )}
+      </div>
+
+      <!-- Right Column: The Shop Window Media Frame -->
+      <div class="scene-media-col">
+        <div class="shop-window-frame" id={`window-${project.id}`}>
+          {project.type === 'video' && project.poster ? (
+            <div class="video-container">
+              {project.media && (
+                <video
+                  src={project.media}
+                  poster={project.poster}
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  class="scene-video"
+                  aria-label={`Visual preview of ${project.title}`}
+                ></video>
+              )}
+              <img
+                src={project.poster}
+                alt={`Real capture of ${project.title}`}
+                class="scene-poster-img"
+                loading="lazy"
+              />
+              <div class="media-sheen-overlay" aria-hidden="true"></div>
+            </div>
+          ) : project.id === 'bigbazar-agent' ? (
+            <!-- Typographic Architecture Diagram for AI Agent -->
+            <div class="diagram-canvas agent-diagram font-mono">
+              <div class="diag-header">
+                <span>SYSTEM ARCHITECTURE // AGENT_PIPELINE</span>
+                <span class="diag-status">STATUS: PROD_DEV</span>
+              </div>
+              <div class="diagram-flow">
+                <div class="flow-step">
+                  <span class="step-tag">01 // INGRESS</span>
+                  <span class="step-title">FB Messenger & IG Reels</span>
+                  <span class="step-detail">10k–40k peak msgs · n8n webhook</span>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step is-accent">
+                  <span class="step-tag">02 // INFERENCE</span>
+                  <span class="step-title">Ollama + Gemini API</span>
+                  <span class="step-detail">Product detection & NL ordering</span>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                  <span class="step-tag">03 // SETTLEMENT</span>
+                  <span class="step-title">MySQL & Digital Receipt</span>
+                  <span class="step-detail">Advance bKash · order lock</span>
+                </div>
+              </div>
+            </div>
+          ) : project.id === 'algomind' ? (
+            <!-- Typographic Diagram for AlgoMind -->
+            <div class="diagram-canvas algo-diagram font-mono">
+              <div class="diag-header">
+                <span>ALGORITHM ENGINE // AI_LAB_CAPSTONE</span>
+                <span class="diag-status">FASTAPI + CLAUDE</span>
+              </div>
+              <div class="algo-grid">
+                <div class="algo-node is-visited">BFS // DFS</div>
+                <div class="algo-node is-active">DIJKSTRA // A*</div>
+                <div class="algo-node">BELLMAN-FORD</div>
+                <div class="algo-node">KRUSKAL MST</div>
+              </div>
+              <div class="algo-console">
+                <span class="console-line">> Initializing shortest-path tree...</span>
+                <span class="console-line">> Claude AI Tutor: "Observing optimal relaxation step."</span>
+              </div>
+            </div>
+          ) : (
+            <!-- Typographic Diagram for MuteSound -->
+            <div class="diagram-canvas mute-diagram font-mono">
+              <div class="diag-header">
+                <span>UTILITY RUNTIME // BROWSER_EXTENSION</span>
+                <span class="diag-status">BACKGROUND_WORKER</span>
+              </div>
+              <div class="mute-clock-box">
+                <span class="mute-time-tag">SYNC // AZAN TIMETABLE</span>
+                <div class="mute-state-indicator">
+                  <span class="mute-pulse"></span>
+                  <span class="mute-status-text">MUTING ACTIVE TABS</span>
+                </div>
+                <p class="mute-desc">Native audio stream silence hook. Daily workflow tool.</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .work-scene {
+    position: relative;
+    padding: clamp(60px, 9vw, 120px) 0;
+    border-bottom: 1px solid var(--color-hairline);
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .scene-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding-x);
+    width: 100%;
+    position: relative;
+  }
+
+  /* Right-edge tick rail */
+  .scene-ticks-rail {
+    display: none;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 1200px) {
+    .scene-ticks-rail {
+      display: flex;
+    }
+  }
+
+  .ticks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .tick-point {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-muted);
+    opacity: 0.4;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .tick-point.is-current {
+    background: var(--color-amber);
+    box-shadow: 0 0 8px var(--color-amber);
+    opacity: 1;
+    transform: scale(1.4);
+  }
+
+  .scene-counter-label {
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    writing-mode: vertical-rl;
+    letter-spacing: 0.16em;
+  }
+
+  /* Scene 2-Column Grid */
+  .scene-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .scene-layout-grid {
+      grid-template-columns: 1.15fr 1fr;
+      gap: 4.5rem;
+    }
+  }
+
+  /* Left Column */
+  .scene-text-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .scene-num-wrapper {
+    position: relative;
+    width: fit-content;
+    line-height: 0.8;
+  }
+
+  .scene-number-outline {
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(236, 231, 220, 0.25);
+    display: block;
+  }
+
+  .scene-number-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    color: var(--color-bone);
+    clip-path: inset(100% 0 0 0); /* Fills from bottom as user scrolls */
+    transition: clip-path 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .scene-status-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.775rem;
+    color: var(--color-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .dot-live {
+    background: var(--color-amber);
+    box-shadow: 0 0 8px var(--color-amber);
+  }
+
+  .dot-dev,
+  .dot-academic,
+  .dot-personal {
+    background: var(--color-muted);
+  }
+
+  .status-name {
+    color: var(--color-bone);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .scene-title {
+    font-size: clamp(1.8rem, 3.4vw, 2.75rem);
+    color: var(--color-bone);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-top: 0.25rem;
+  }
+
+  .scene-stack-row {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .stack-prefix {
+    color: var(--color-amber);
+  }
+
+  .stack-text {
+    color: #cfcac0;
+  }
+
+  .scene-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .scene-bullets li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: #ded8cd;
+    line-height: 1.6;
+  }
+
+  .bullet-marker {
+    color: var(--color-amber);
+    font-family: var(--font-mono);
+  }
+
+  .btn-open-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--color-amber);
+    color: #000;
+    padding: 0.65rem 1.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: opacity 0.2s ease;
+    border-radius: 2px;
+  }
+
+  .btn-open-live:hover {
+    opacity: 0.9;
+  }
+
+  /* Right Column: Shop Window Frame */
+  .scene-media-col {
+    width: 100%;
+  }
+
+  .shop-window-frame {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: #0f0e0d;
+    border: 1px solid var(--color-hairline);
+    position: relative;
+    overflow: hidden;
+    clip-path: inset(0 0 0 0); /* Window open effect */
+    transition: clip-path 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .video-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .scene-poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .scene-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 1;
+  }
+
+  .media-sheen-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.7);
+  }
+
+  /* Diagram Canvases */
+  .diagram-canvas {
+    width: 100%;
+    height: 100%;
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: repeating-linear-gradient(
+      0deg,
+      #11110f,
+      #11110f 1px,
+      transparent 1px,
+      transparent 20px
+    );
+  }
+
+  .diag-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    letter-spacing: 0.12em;
+    border-bottom: 1px solid var(--color-hairline);
+    padding-bottom: 0.75rem;
+  }
+
+  .diag-status {
+    color: var(--color-amber);
+  }
+
+  /* Agent Diagram */
+  .diagram-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .flow-step {
+    background: rgba(236, 231, 220, 0.03);
+    border: 1px solid var(--color-hairline);
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .flow-step.is-accent {
+    border-color: rgba(255, 176, 0, 0.3);
+    background: rgba(255, 176, 0, 0.03);
+  }
+
+  .step-tag {
+    font-size: 0.65rem;
+    color: var(--color-amber);
+    letter-spacing: 0.1em;
+  }
+
+  .step-title {
+    font-size: 0.85rem;
+    color: var(--color-bone);
+    font-weight: 500;
+  }
+
+  .step-detail {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+
+  .flow-arrow {
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 0.8rem;
+  }
+
+  /* Algo Diagram */
+  .algo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+
+  .algo-node {
+    padding: 1rem;
+    border: 1px solid var(--color-hairline);
+    font-size: 0.8rem;
+    text-align: center;
+    color: var(--color-muted);
+  }
+
+  .algo-node.is-active {
+    border-color: var(--color-amber);
+    color: var(--color-amber);
+    background: rgba(255, 176, 0, 0.04);
+  }
+
+  .algo-node.is-visited {
+    border-color: rgba(236, 231, 220, 0.3);
+    color: var(--color-bone);
+  }
+
+  .algo-console {
+    background: #080807;
+    border: 1px solid var(--color-hairline);
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    color: #a39e93;
+  }
+
+  /* Mute Diagram */
+  .mute-clock-box {
+    margin: auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .mute-time-tag {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    letter-spacing: 0.14em;
+  }
+
+  .mute-state-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(236, 231, 220, 0.04);
+    border: 1px solid var(--color-hairline);
+    padding: 0.75rem 1.5rem;
+  }
+
+  .mute-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-amber);
+    box-shadow: 0 0 10px var(--color-amber);
+  }
+
+  .mute-status-text {
+    font-size: 0.85rem;
+    color: var(--color-bone);
+    letter-spacing: 0.08em;
+  }
+
+  .mute-desc {
+    font-size: 0.775rem;
+    color: var(--color-muted);
+    max-width: 20rem;
+  }
+</style>

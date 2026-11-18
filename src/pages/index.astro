@@ -1,0 +1,51 @@
+---
+// src/pages/index.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Countdown from '../components/Countdown.astro';
+import HeaderNav from '../components/HeaderNav.astro';
+import Hero from '../components/Hero.astro';
+import WhatIAm from '../components/WhatIAm.astro';
+import WorkSection from '../components/WorkSection.astro';
+import StackLine from '../components/StackLine.astro';
+import FooterShutter from '../components/FooterShutter.astro';
+
+import siteData from '../content/site.json';
+---
+
+<BaseLayout
+  title={siteData.site.title}
+  description={siteData.site.description}
+  url={siteData.site.url}
+  personName={siteData.person.name}
+>
+  <!-- 0. INTRO: The Countdown (3.000s -> 0.000s) + Slat Lift -->
+  <Countdown />
+
+  <!-- Nav: Wordmark + What I am / Work (hides on downscroll) -->
+  <HeaderNav shortName={siteData.person.shortName} />
+
+  <main id="main-content">
+    <!-- 1. HERO: Huge serif name + letter-mask reveal + light sweep (NO PHOTO) -->
+    <Hero
+      name={siteData.person.name}
+      roles={siteData.person.roles}
+      headline={siteData.person.headline}
+    />
+
+    <!-- 2. WHAT I AM: 4 pinned scroll-scrubbed statements with drawn underlines -->
+    <WhatIAm statements={siteData.person.statements} />
+
+    <!-- 3. WORK: The Shop Windows (5 real project scenes) -->
+    <WorkSection projects={siteData.projects} />
+
+    <!-- 4. THE STACK: Raw monospace capability line -->
+    <StackLine stack={siteData.person.stack} />
+  </main>
+
+  <!-- 5. FOOTER: The Shutter Closes (slat descent, WAAPI settle, stencil contacts) -->
+  <FooterShutter
+    contact={siteData.contact}
+    year={siteData.site.year}
+    name={siteData.person.name}
+  />
+</BaseLayout>

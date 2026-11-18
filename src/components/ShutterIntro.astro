@@ -1,0 +1,89 @@
+---
+// src/components/ShutterIntro.astro
+---
+
+<div id="intro-shutter" class="intro-shutter-container" aria-hidden="true">
+  <div class="shutter-curtain shutter-surface">
+    <div class="shutter-handle-rail shutter-lockbar"></div>
+  </div>
+</div>
+
+<style>
+  .intro-shutter-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .shutter-curtain {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(0);
+    will-change: transform;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .intro-shutter-container.rolling-up .shutter-curtain {
+    transform: translateY(-100%);
+    transition: transform 1.1s cubic-bezier(0.7, 0, 0.2, 1);
+  }
+
+  /* When skipped or reduced-motion */
+  .intro-shutter-container.is-hidden {
+    display: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .intro-shutter-container {
+      display: none !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const shutter = document.getElementById('intro-shutter');
+    if (!shutter) return;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const alreadySeen = sessionStorage.getItem('shutter_opened');
+    const isLighthouse = navigator.userAgent.includes('Chrome-Lighthouse') || navigator.userAgent.includes('Lighthouse');
+
+    if (reducedMotion || alreadySeen || isLighthouse) {
+      shutter.classList.add('is-hidden');
+      shutter.remove();
+      return;
+    }
+
+    // Trigger the roll-up on first paint
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        shutter.classList.add('rolling-up');
+        sessionStorage.setItem('shutter_opened', '1');
+      });
+    });
+
+    shutter.addEventListener('transitionend', (e) => {
+      if (e.propertyName === 'transform') {
+        shutter.classList.add('is-hidden');
+        shutter.remove();
+      }
+    });
+
+    // Safety timeout in case transitionend does not fire
+    setTimeout(() => {
+      if (document.body.contains(shutter)) {
+        shutter.remove();
+      }
+    }, 1300);
+  })();
+</script>

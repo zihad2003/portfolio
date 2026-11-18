@@ -1,0 +1,294 @@
+---
+// src/components/Hero.astro
+interface Props {
+  name: string;
+  roles: string;
+  headline: string;
+}
+
+const { name, roles, headline } = Astro.props;
+
+// Split name into words & characters for letter-mask reveal
+const words = name.split(' ');
+---
+
+<section class="hero-section" id="hero-section" aria-label="Introduction">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <!-- Huge Viewport-Filling Italic Name with Letter Masks -->
+      <h1 class="hero-title font-display" id="hero-title" aria-label={name}>
+        {words.map((word) => (
+          <span class="hero-word">
+            {word.split('').map((char) => (
+              <span class="char-mask">
+                <span class="char-letter">{char}</span>
+              </span>
+            ))}
+            <span class="word-spacer">&nbsp;</span>
+          </span>
+        ))}
+        <!-- Single Diagonal Light Sweep Overlay -->
+        <span class="light-sweep-sheen" id="hero-light-sweep" aria-hidden="true"></span>
+      </h1>
+
+      <div class="hero-meta-block">
+        <p class="hero-roles font-body">
+          {roles}
+        </p>
+        <p class="hero-headline font-mono">
+          {headline}
+        </p>
+      </div>
+
+      <!-- Hairline Scroll Cue -->
+      <div class="hero-scroll-cue font-mono" aria-hidden="true">
+        <span class="cue-label">SCROLL //</span>
+        <div class="cue-hairline">
+          <div class="cue-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    min-height: clamp(550px, 75vh, 850px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding: clamp(60px, 10vh, 100px) 0 clamp(40px, 6vh, 60px);
+    border-bottom: 1px solid var(--color-hairline);
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding-x);
+    width: 100%;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    position: relative;
+  }
+
+  /* Huge Viewport Name */
+  .hero-title {
+    font-size: clamp(3.2rem, 9.4vw, 8.8rem);
+    color: var(--color-bone);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    position: relative;
+    display: inline-block;
+    cursor: default;
+    user-select: none;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+
+  .hero-word {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .char-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding-bottom: 0.08em;
+  }
+
+  .char-letter {
+    display: inline-block;
+    transform: translateY(0) rotate(0deg);
+    transition: transform 0.85s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: transform;
+  }
+
+  /* When shutter countdown is active, hide letters for stagger entrance */
+  .hero-title.is-preparing .char-letter {
+    transform: translateY(110%) rotate(3deg);
+  }
+
+  .hero-title.is-revealed .char-letter {
+    transform: translateY(0%) rotate(0deg) !important;
+  }
+
+  /* Light sweep sheen across the name */
+  .light-sweep-sheen {
+    position: absolute;
+    inset: -20px 0;
+    width: 100%;
+    height: calc(100% + 40px);
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 35%,
+      rgba(236, 231, 220, 0.16) 48%,
+      rgba(255, 176, 0, 0.22) 50%,
+      rgba(236, 231, 220, 0.16) 52%,
+      transparent 65%
+    );
+    transform: translateX(-140%);
+    will-change: transform;
+    opacity: 0;
+  }
+
+  .light-sweep-sheen.is-sweeping {
+    opacity: 1;
+    transform: translateX(140%);
+    transition: transform 1.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  }
+
+  /* Meta block below name */
+  .hero-meta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 44rem;
+    padding-left: 4px;
+    border-left: 2px solid var(--color-amber);
+  }
+
+  .hero-roles {
+    font-size: clamp(1.25rem, 2.4vw, 1.85rem);
+    color: var(--color-bone);
+    font-weight: 450;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-headline {
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+  }
+
+  /* Hairline Scroll Cue */
+  .hero-scroll-cue {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1.5rem;
+  }
+
+  .cue-label {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    letter-spacing: 0.14em;
+  }
+
+  .cue-hairline {
+    width: 90px;
+    height: 1px;
+    background: var(--color-hairline);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cue-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 100%;
+    background: var(--color-bone);
+    animation: cue-slide 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+
+  @keyframes cue-slide {
+    0% { transform: translateX(-35px); }
+    50% { transform: translateX(95px); }
+    100% { transform: translateX(95px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .char-letter {
+      transform: none !important;
+      transition: none !important;
+    }
+    .light-sweep-sheen {
+      display: none !important;
+    }
+    .cue-bar {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const title = document.getElementById('hero-title');
+    const sheen = document.getElementById('hero-light-sweep');
+    if (!title) return;
+
+    const letters = title.querySelectorAll('.char-letter');
+
+    function revealHero(instant = false) {
+      title.classList.remove('is-preparing');
+      title.classList.add('is-revealed');
+
+      if (!instant) {
+        letters.forEach((letter, idx) => {
+          const htmlEl = letter as HTMLElement;
+          htmlEl.style.transitionDelay = `${idx * 36}ms`;
+        });
+
+        const totalLetterTime = letters.length * 36 + 650;
+        setTimeout(() => {
+          if (sheen) {
+            sheen.classList.add('is-sweeping');
+          }
+        }, totalLetterTime);
+      } else {
+        if (sheen) {
+          sheen.classList.add('is-sweeping');
+        }
+      }
+    }
+
+    const seen = sessionStorage.getItem('shutter_seen');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isOpened = (window as any).__shutterOpened;
+
+    if (seen || reducedMotion || isOpened) {
+      revealHero(true);
+    } else {
+      title.classList.add('is-preparing');
+      document.addEventListener('shutter:opened', () => {
+        revealHero(false);
+      }, { once: true });
+
+      // Safety fallback after 3.8s in case event is missed
+      setTimeout(() => {
+        if (!title.classList.contains('is-revealed')) {
+          revealHero(false);
+        }
+      }, 3800);
+    }
+
+    // Desktop pointer parallax on name (max ±8px)
+    if (window.matchMedia('(min-width: 900px) and (hover: hover)').matches) {
+      let rafId: number | null = null;
+      window.addEventListener('mousemove', (e) => {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          const { clientX, clientY } = e;
+          const { innerWidth, innerHeight } = window;
+          const offsetX = (clientX / innerWidth - 0.5) * 16;
+          const offsetY = (clientY / innerHeight - 0.5) * 16;
+          title.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
+        });
+      }, { passive: true });
+    }
+  })();
+</script>
