@@ -7,26 +7,14 @@ interface Props {
 }
 
 const { name, roles, headline } = Astro.props;
-
-// Split name into words & characters for letter-mask reveal
-const words = name.split(' ');
 ---
 
 <section class="hero-section" id="hero-section" aria-label="Introduction">
   <div class="hero-inner">
     <div class="hero-content">
-      <!-- Huge Viewport-Filling Italic Name with Letter Masks -->
-      <h1 class="hero-title font-display" id="hero-title" aria-label={name}>
-        {words.map((word) => (
-          <span class="hero-word">
-            {word.split('').map((char) => (
-              <span class="char-mask">
-                <span class="char-letter">{char}</span>
-              </span>
-            ))}
-            <span class="word-spacer">&nbsp;</span>
-          </span>
-        ))}
+      <!-- Huge Viewport-Filling Italic Name -->
+      <h1 class="hero-title font-display" id="hero-title">
+        <span class="hero-title-text">{name}</span>
         <!-- Single Diagonal Light Sweep Overlay -->
         <span class="light-sweep-sheen" id="hero-light-sweep" aria-hidden="true"></span>
       </h1>
@@ -81,45 +69,35 @@ const words = name.split(' ');
   .hero-title {
     font-size: clamp(3.2rem, 9.4vw, 8.8rem);
     color: var(--color-bone);
-    font-style: italic;
+    font-style: normal;
     font-weight: 400;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
     position: relative;
     display: inline-block;
     cursor: default;
     user-select: none;
     transform: translate3d(0, 0, 0);
-    will-change: transform;
+    will-change: transform, opacity;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .hero-word {
-    display: inline-flex;
-    flex-wrap: nowrap;
-    white-space: nowrap;
-  }
-
-  .char-mask {
+  .hero-title-text {
     display: inline-block;
-    overflow: hidden;
-    vertical-align: top;
-    padding-bottom: 0.08em;
+    position: relative;
+    font-feature-settings: "kern" 1, "liga" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
-  .char-letter {
-    display: inline-block;
-    transform: translateY(0) rotate(0deg);
-    transition: transform 0.85s cubic-bezier(0.2, 0.7, 0.2, 1);
-    will-change: transform;
+  .hero-title.is-preparing {
+    opacity: 0;
+    transform: translateY(18px);
   }
 
-  /* When shutter countdown is active, hide letters for stagger entrance */
-  .hero-title.is-preparing .char-letter {
-    transform: translateY(110%) rotate(3deg);
-  }
-
-  .hero-title.is-revealed .char-letter {
-    transform: translateY(0%) rotate(0deg) !important;
+  .hero-title.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   /* Light sweep sheen across the name */
@@ -212,8 +190,9 @@ const words = name.split(' ');
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .char-letter {
+    .hero-title {
       transform: none !important;
+      opacity: 1 !important;
       transition: none !important;
     }
     .light-sweep-sheen {
@@ -231,24 +210,16 @@ const words = name.split(' ');
     const sheen = document.getElementById('hero-light-sweep');
     if (!title) return;
 
-    const letters = title.querySelectorAll('.char-letter');
-
     function revealHero(instant = false) {
       title.classList.remove('is-preparing');
       title.classList.add('is-revealed');
 
       if (!instant) {
-        letters.forEach((letter, idx) => {
-          const htmlEl = letter as HTMLElement;
-          htmlEl.style.transitionDelay = `${idx * 36}ms`;
-        });
-
-        const totalLetterTime = letters.length * 36 + 650;
         setTimeout(() => {
           if (sheen) {
             sheen.classList.add('is-sweeping');
           }
-        }, totalLetterTime);
+        }, 350);
       } else {
         if (sheen) {
           sheen.classList.add('is-sweeping');
