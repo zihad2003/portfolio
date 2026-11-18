@@ -7,6 +7,7 @@ import Hero from '../components/Hero.astro';
 import WhatIAm from '../components/WhatIAm.astro';
 import WorkSection from '../components/WorkSection.astro';
 import StackLine from '../components/StackLine.astro';
+import SocialBar from '../components/SocialBar.astro';
 import FooterShutter from '../components/FooterShutter.astro';
 
 import siteData from '../content/site.json';
@@ -40,6 +41,14 @@ import siteData from '../content/site.json';
 
     <!-- 4. THE STACK: Raw monospace capability line -->
     <StackLine stack={siteData.person.stack} />
+
+    <!-- 4.5. DIRECT CHANNELS: Outbound GitHub & LinkedIn Action Buttons -->
+    <SocialBar
+      github={siteData.contact.github}
+      githubDisplay={siteData.contact.githubDisplay}
+      linkedin={siteData.contact.linkedin}
+      linkedinDisplay={siteData.contact.linkedinDisplay}
+    />
   </main>
 
   <!-- 5. FOOTER: The Shutter Closes (slat descent, WAAPI settle, stencil contacts) -->

@@ -1,0 +1,212 @@
+---
+// src/components/SocialBar.astro
+interface Props {
+  github: string;
+  githubDisplay: string;
+  linkedin: string;
+  linkedinDisplay: string;
+}
+
+const { github, githubDisplay, linkedin, linkedinDisplay } = Astro.props;
+---
+
+<section class="social-bar-section" aria-label="Profiles and Repositories">
+  <div class="social-bar-inner">
+    <div class="social-bar-header font-mono">
+      <span class="social-label">[ DIRECT CHANNELS // CODE & NETWORK ]</span>
+      <span class="social-hint font-mono">OUTBOUND ↗</span>
+    </div>
+
+    <div class="social-buttons-grid">
+      <!-- GitHub Button -->
+      <a
+        href={github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="social-btn"
+        id="btn-github"
+        aria-label="Visit MD. Zeaul Hoque Zihad's GitHub profile"
+      >
+        <div class="btn-left">
+          <span class="btn-network font-mono">GIT //</span>
+          <span class="btn-title font-display">GitHub</span>
+          <span class="btn-handle font-mono">{githubDisplay}</span>
+        </div>
+        <div class="btn-arrow font-mono" aria-hidden="true">
+          <span class="arrow-glyph">↗</span>
+        </div>
+        <div class="btn-accent-glow" aria-hidden="true"></div>
+      </a>
+
+      <!-- LinkedIn Button -->
+      <a
+        href={linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="social-btn"
+        id="btn-linkedin"
+        aria-label="Visit MD. Zeaul Hoque Zihad's LinkedIn profile"
+      >
+        <div class="btn-left">
+          <span class="btn-network font-mono">IN //</span>
+          <span class="btn-title font-display">LinkedIn</span>
+          <span class="btn-handle font-mono">{linkedinDisplay}</span>
+        </div>
+        <div class="btn-arrow font-mono" aria-hidden="true">
+          <span class="arrow-glyph">↗</span>
+        </div>
+        <div class="btn-accent-glow" aria-hidden="true"></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .social-bar-section {
+    padding: clamp(40px, 6vw, 70px) 0 clamp(60px, 8vw, 90px);
+    position: relative;
+    border-bottom: 1px solid var(--color-hairline);
+    background: #090a0c;
+  }
+
+  .social-bar-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding-x);
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .social-bar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    letter-spacing: 0.14em;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .social-label {
+    color: var(--color-bone);
+    opacity: 0.85;
+  }
+
+  .social-hint {
+    color: var(--color-amber);
+  }
+
+  .social-buttons-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 680px) {
+    .social-buttons-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .social-btn {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 1.75rem;
+    background: #0d0f12;
+    border: 1px solid var(--color-hairline);
+    text-decoration: none;
+    overflow: hidden;
+    transition:
+      border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.3s ease;
+  }
+
+  .social-btn:hover {
+    border-color: var(--color-amber);
+    background: #111418;
+    transform: translateY(-2px);
+  }
+
+  .social-btn:focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 3px;
+  }
+
+  .btn-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    z-index: 2;
+  }
+
+  .btn-network {
+    font-size: 0.6875rem;
+    color: var(--color-amber);
+    letter-spacing: 0.14em;
+    font-weight: 500;
+  }
+
+  .btn-title {
+    font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+    color: var(--color-bone);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-handle {
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+    padding-top: 0.2rem;
+  }
+
+  .social-btn:hover .btn-handle {
+    color: var(--color-bone);
+  }
+
+  .btn-arrow {
+    font-size: 1.75rem;
+    color: var(--color-muted);
+    z-index: 2;
+    line-height: 1;
+    transition:
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.35s ease;
+  }
+
+  .social-btn:hover .btn-arrow {
+    color: var(--color-amber);
+    transform: translate(4px, -4px);
+  }
+
+  .btn-accent-glow {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--color-amber);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .social-btn:hover .btn-accent-glow {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .social-btn:hover {
+      transform: none !important;
+    }
+    .social-btn:hover .btn-arrow {
+      transform: none !important;
+    }
+  }
+</style>
